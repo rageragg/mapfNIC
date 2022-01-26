@@ -1,0 +1,18 @@
+
+--
+@ra_p_hoja_tec_200_mni.sp
+@ra_p_hoja_tec_XXX_mni.sp
+@ra_p_hoja_tec_reaseguro_mni.sp
+--
+GRANT  EXECUTE ON ra_p_hoja_tec_200_mni TO PUBLIC;
+GRANT  EXECUTE ON ra_p_hoja_tec_XXX_mni TO PUBLIC;
+GRANT  EXECUTE ON ra_p_hoja_tec_reaseguro_mni TO PUBLIC;
+
+--
+DROP   PUBLIC  SYNONYM ra_p_hoja_tec_200_mni;
+DROP   PUBLIC  SYNONYM ra_p_hoja_tec_XXX_mni;
+DROP   PUBLIC  SYNONYM ra_p_hoja_tec_reaseguro_mni;
+--
+CREATE PUBLIC  SYNONYM ra_p_hoja_tec_200_mni FOR ra_p_hoja_tec_200_mni;
+CREATE PUBLIC  SYNONYM ra_p_hoja_tec_XXX_mni FOR ra_p_hoja_tec_XXX_mni;
+CREATE PUBLIC  SYNONYM ra_p_hoja_tec_reaseguro_mni FOR ra_p_hoja_tec_reaseguro_mni;

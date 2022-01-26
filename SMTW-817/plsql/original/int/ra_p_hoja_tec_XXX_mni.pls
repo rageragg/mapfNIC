@@ -1,11 +1,11 @@
-CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%TYPE,
+create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%TYPE,
                                                   p_num_poliza a2000030.num_poliza%TYPE,
                                                   p_num_spto   a2000030.num_spto%TYPE,
                                                   p_num_riesgo a2501500.num_riesgo%TYPE,
                                                   p_num_mov    a2501600.num_mov%TYPE,
                                                   p_spto_nulo  VARCHAR2 DEFAULT 'S') IS
     --
-    /* -------------------- VERSION = 1.03 -------------------- */
+    /* -------------------- VERSION = 1.04 -------------------- */
     --
     /* -------------------- MODIFICACIONES -----------------
     || 2021/06/18 - RGUERRA - 1.00 - (CARRIERHOUSE)
@@ -13,9 +13,13 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
     || 2021/10/06 - RGUERRA - 1.02 - (CARRIERHOUSE)
     || Se cambia el uso de cap_cedido --> cap_cedido_spto
     ||                     imp_prima  --> imp_prima_spto
+    || 2021/10/20 - RGUERRA - 1.03 - (CARRIERHOUSE)
+    || Se agrega una columna para indicar el nombre de la 
+    || reaseguradora asociada al registro, solo para el ramo
+    || finanzas 501
     || Se agrega el parametro p_spto_nulo para indicar que el 
     || usuario no suministro el suplemento
-    || 2021/10/25 - RGUERRA - 1.03 - (CARRIERHOUSE)
+    || 2021/10/25 - RGUERRA - 1.04 - (CARRIERHOUSE)
     || Se agrega nueva columna de porcentaje de Distribucion prima
     ||---------------------------------------------------------*/
     --
@@ -89,13 +93,12 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         ORDER BY num_mov;  
     --
 	-- secciones 207 y 208
-    CURSOR c_secciones_207_208(p_num_riesgo a2501000.num_riesgo%TYPE,
-	                           p_num_mov    a2501000.num_mov%TYPE) IS
+    CURSOR c_secciones_XXX(p_num_riesgo a2501000.num_riesgo%TYPE,
+	                       p_num_mov    a2501000.num_mov%TYPE) IS
       	SELECT DISTINCT cod_secc_reas, nom_secc_reas 
           FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
          WHERE num_riesgo = p_num_riesgo
 		   AND num_mov    = nvl(p_num_mov, num_mov)
-           AND cod_secc_reas IN (207, 208)
         ORDER BY cod_secc_reas;   
     --
 	-- secciones miscelaneas
@@ -108,10 +111,10 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
            AND cod_secc_reas NOT IN (207, 208)
         ORDER BY cod_secc_reas;          
     --
-    -- detalle de la seccion 207 Y 208
-    CURSOR c_detalle_207_208(p_num_riesgo    a2501000.num_riesgo%TYPE,
-		                     p_num_mov       a2501000.num_mov%TYPE,     
-                             p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
+    -- detalle de la seccion 
+    CURSOR c_detalle_XXX(p_num_riesgo    a2501000.num_riesgo%TYPE,
+		                 p_num_mov       a2501000.num_mov%TYPE,     
+                         p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
         SELECT cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion,
                sum( imp_prima_spto ) imp_prima_spto,
                sum( ict_comision_spto ) ict_comision_spto,
@@ -121,35 +124,31 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
            AND num_riesgo = p_num_riesgo
 		   AND num_mov    = nvl(p_num_mov, num_mov)
            AND cod_secc_reas = p_cod_secc_reas
-        GROUP BY cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion  
+        GROUP BY cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion
         ORDER BY cod_contrato asc, cod_cia_rea desc; 
     --
-    -- detalle de la seccion 207 Y 208
+    -- detalle de la seccion 207 Y 208 (NO SE USA)
     CURSOR c_detalle_misc(p_num_riesgo    a2501000.num_riesgo%TYPE,
 		                  p_num_mov       a2501000.num_mov%TYPE,     
                           p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
-        SELECT cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion,
-               sum( imp_prima_spto ) imp_prima_spto,
-               sum( ict_comision_spto ) ict_comision_spto,
-               sum( cap_cedido_spto ) cap_cedido_spto,
-               sum( 0 ) pct_comision
+        SELECT *
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
-         WHERE k_origen IN (2, 3)
+         WHERE k_origen = 3 
            AND num_riesgo    = p_num_riesgo
 		   AND num_mov       = nvl(p_num_mov, num_mov)
            AND cod_secc_reas = p_cod_secc_reas
            AND cod_secc_reas NOT IN (207, 208)
-        GROUP BY cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion  
-        ORDER BY cod_contrato asc, cod_cia_rea desc;      
+           AND imp_prima_spto <> 0
+        ORDER BY cod_contrato;     
     --
-    -- acumulado de la seccion 207 y 208
+    -- acumulado de la seccion 
     --      modificacion 2021/10/06 ver. 1.02, se agrega la suma cap_cedido_spto y imp_prima_spto
-    CURSOR c_acumulado_207_208(p_num_riesgo    a2501000.num_riesgo%TYPE,
-		                       p_num_mov       a2501000.num_mov%TYPE,     
-                               p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
-        SELECT sum(decode(p_cod_secc_reas, 208, 0, cap_cedido)) cap_cedido, 
+    CURSOR c_acumulado_XXX(p_num_riesgo    a2501000.num_riesgo%TYPE,
+		                   p_num_mov       a2501000.num_mov%TYPE,     
+                           p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
+        SELECT sum(cap_cedido) cap_cedido, 
                sum(imp_prima) imp_prima,
-               sum(decode(p_cod_secc_reas, 208, 0, cap_cedido_spto)) cap_cedido_spto,
+               sum(cap_cedido_spto) cap_cedido_spto,
                sum(imp_prima_spto) imp_prima_spto,
                sum(pct_participacion) pct_participacion
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
@@ -160,11 +159,11 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
            AND cod_contrato <> 9999999
            AND nom_contrato <> 'FACULTATIVO';
     --
-    -- detalle de la seccion 207 y 208 facultativo
+    -- detalle de la seccion proporcional
     --      modificacion 2021/10/06 ver. 1.02, se agrega la suma cap_cedido_spto y imp_prima_spto
-    CURSOR c_detalle_fac_207_208(p_num_riesgo    a2501000.num_riesgo%TYPE,
-		                         p_num_mov       a2501000.num_mov%TYPE,     
-                                 p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
+    CURSOR c_detalle_fac_XXX(p_num_riesgo    a2501000.num_riesgo%TYPE,
+		                     p_num_mov       a2501000.num_mov%TYPE,     
+                             p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
         SELECT cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion,
                sum(decode(p_cod_secc_reas, 208, 0, cap_cedido)) cap_cedido,
                sum(imp_prima) imp_prima,
@@ -177,8 +176,27 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
            AND num_riesgo    = p_num_riesgo
 		   AND num_mov       = nvl(p_num_mov, num_mov)
            AND cod_secc_reas = p_cod_secc_reas
-           AND nom_contrato = 'FACULTATIVO'
-          GROUP BY cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion;
+           AND nom_contrato  = 'FACULTATIVO' 
+         GROUP BY cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion; 
+    --
+    --  No proporcional
+    CURSOR c_detalle_fac_noproporc(p_num_riesgo    a2501000.num_riesgo%TYPE,
+		                     p_num_mov       a2501000.num_mov%TYPE,     
+                             p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
+        SELECT cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion,
+               sum(decode(p_cod_secc_reas, 208, 0, cap_cedido)) cap_cedido,
+               sum(imp_prima) imp_prima,
+               sum(imp_comision_spto) imp_comision,
+               sum(decode(p_cod_secc_reas, 208, 0, cap_cedido_spto)) cap_cedido_spto,
+               sum(imp_prima_spto) imp_prima_spto,
+               sum(ict_comision_spto) ict_comision_spto
+		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
+         WHERE k_origen = 1
+           AND num_riesgo    = p_num_riesgo
+		   AND num_mov       = nvl(p_num_mov, num_mov)
+           AND cod_secc_reas = p_cod_secc_reas
+           AND nom_contrato  = 'FACULTATIVO' 
+           GROUP BY cod_contrato, cod_cia_rea, nom_cia_rea, nom_contrato, pct_participacion;       
     --
     -- acumulado de la seccion 207 y 208 FACULTATIVO
     --      modificacion 2021/10/06 ver. 1.02, se agrega la suma cap_cedido_spto y imp_prima_spto
@@ -190,7 +208,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                sum(decode(p_cod_secc_reas, 208, 0, cap_cedido_spto)) cap_cedido_spto, 
                sum(imp_prima_spto) imp_prima_spto
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
-         WHERE k_origen = 2 
+         WHERE k_origen = 2
            AND num_riesgo    = p_num_riesgo
 		   AND num_mov       = nvl(p_num_mov, num_mov)
            AND cod_secc_reas = p_cod_secc_reas
@@ -207,18 +225,18 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                sum(decode(p_cod_secc_reas, 208, 0, cap_cedido_spto)) cap_cedido_spto, 
                sum(imp_prima_spto) imp_prima_spto
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
-         WHERE k_origen IN (2,3) 
+         WHERE k_origen = 1 
            AND num_riesgo    = p_num_riesgo
 		   AND num_mov       = nvl(p_num_mov, num_mov)
            AND cod_secc_reas = p_cod_secc_reas
            AND cod_secc_reas NOT IN (207, 208)
         ORDER BY num_riesgo, num_mov;    
     --
-    -- reaseguradores 
-    --      modificacion 2021/10/06 ver. 1.02, se agrega la suma cap_cedido_spto y imp_prima_spto   
+    -- reaseguradores    
+    --      modificacion 2021/10/06 ver. 1.02, se agrega la suma cap_cedido_spto y imp_prima_spto
     CURSOR c_reaseguradora(p_num_riesgo a2501000.num_riesgo%TYPE,
 		                   p_num_mov    a2501000.num_mov%TYPE) IS
-        SELECT cod_cia_rea, 
+        SELECT cod_cia_rea,   
                nom_cia_rea, 
                sum(cap_cedido) cap_cedido,
                sum(imp_prima) imp_prima,
@@ -233,17 +251,16 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                        nom_cia_rea, 
                        sum(decode(cod_secc_reas, 208, 0, cap_cedido)) cap_cedido,
                        sum(imp_prima) imp_prima,
-                       sum(imp_comision_spto) imp_comision,
+                       sum(imp_comision_spto) imp_comision, 
                        sum(decode(cod_secc_reas, 208, 0, cap_cedido_spto)) cap_cedido_spto,
                        sum(imp_prima_spto) imp_prima_spto,
                        sum(ict_comision_spto) ict_comision_spto
                   FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)      
-                     WHERE k_origen = 2 -- facultativo 
-                       AND num_riesgo   = p_num_riesgo
-                       AND num_mov      = nvl(p_num_mov, num_mov)
-                       AND cod_secc_reas IN (207, 208)
-                       AND nom_contrato = 'FACULTATIVO'
-                     GROUP BY cod_secc_reas, cod_cia_rea, nom_cia_rea)
+                 WHERE k_origen = 2 -- facultativo 
+                   AND num_riesgo   = p_num_riesgo
+                   AND num_mov      = nvl(p_num_mov, num_mov)
+                   AND nom_contrato = 'FACULTATIVO'
+                GROUP BY cod_secc_reas, cod_cia_rea, nom_cia_rea)
           GROUP BY cod_cia_rea, nom_cia_rea;
     -- 
     -- agregamos estilos propios
@@ -368,7 +385,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 		--
 		EXCEPTION
 			WHEN OTHERS THEN
-                dbms_output.put_line(sqlerrm); 
+				dbms_output.put_line(sqlerrm); 
 				--
 				RAISE e_error_tratar_archivo;
 				--
@@ -377,17 +394,57 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 	-- cierre de archivo 
 	PROCEDURE p_cerrar_fichero IS
 	BEGIN
+		--
+		dc_k_xml_format_xls_mca.p_cerrar_archivo(g_id_fichero);
+		--
+		EXCEPTION
+			WHEN OTHERS THEN
 			--
-			dc_k_xml_format_xls_mca.p_cerrar_archivo(g_id_fichero);
+			RAISE e_error_tratar_archivo;
 			--
-			EXCEPTION
-				WHEN OTHERS THEN
-				--
-				RAISE e_error_tratar_archivo;
-				--
 	END p_cerrar_fichero;	
     --
-    FUNCTION f_tasa_coberturas(p_num_riesgo a2501000.num_riesgo%TYPE)
+    -- analiza el tipo de contrato, devuelve el nombre del contrato/tipo de contrato 
+    FUNCTION f_analiza_contrato(p_cod_contrato a2501000.cod_contrato%TYPE,
+                                p_comparar VARCHAR2)
+        RETURN BOOLEAN IS 
+        --
+        l_nombre           VARCHAR2(128);
+        l_mca_proporcional a2500130.mca_proporcional%TYPE;
+        l_num_contrato     a2500140.num_contrato%TYPE := NULL;
+        l_anio_contrato    a2500140.anio_contrato%TYPE := NULL;
+        l_serie_contrato   a2500140.serie_contrato%TYPE := NULL;
+        --
+    BEGIN
+        --
+        l_num_contrato      := substr(p_cod_contrato, 1, 4);
+        l_anio_contrato     := substr(p_cod_contrato, 5, 4);
+        l_serie_contrato    := substr(p_cod_contrato, 9, 2);
+        --
+        SELECT a.nom_contrato ||' / '|| b.nom_tip_contrato, b.mca_proporcional
+          INTO l_nombre, l_mca_proporcional
+          FROM a2500140 a,
+               a2500130 b
+         WHERE a.cod_cia          = b.cod_cia
+           AND a.tip_contrato     = b.tip_contrato
+           AND a.cod_cia          = g_cod_cia 
+           AND a.num_contrato     = l_num_contrato 
+           AND a.anio_contrato    = l_anio_contrato 
+           AND a.serie_contrato   = l_serie_contrato;
+        --
+        IF instr( upper(l_nombre), upper(p_comparar) ) > 0 THEN
+            RETURN TRUE;
+        END IF;
+        --
+        RETURN l_mca_proporcional = 'S';
+        --
+        EXCEPTION
+            WHEN OTHERS THEN 
+                RETURN FALSE;
+                --   
+    END f_analiza_contrato;
+    --
+    FUNCTION f_tasa_coberturas( p_num_riesgo    a2501000.num_riesgo%TYPE )
       RETURN NUMBER IS 
 		--
 		l_num a2000040.tasa_cob%TYPE := 0;
@@ -419,7 +476,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 	                         p_fec_validez g2990004.fec_validez%TYPE,
 							 p_num_riesgo  a2501000.num_riesgo%TYPE,
 							 p_num_mov     a2501000.num_mov%TYPE)
-      RETURN VARCHAR2 IS 
+        RETURN VARCHAR2 IS 
 		--
 		l_cod_modalidad a2000020.val_campo%TYPE;
 		l_nom_modalidad g2990004.nom_modalidad%TYPE;
@@ -483,9 +540,9 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 	END f_max_num_mov;
     --
     -- calcula el importe total de la prima para seccion 207 y 208
-    FUNCTION f_prima_total_207_208(p_num_riesgo a2501000.num_riesgo%TYPE,
-                                   p_num_mov    a2501000.num_mov%TYPE) 
-      RETURN NUMBER IS 
+    FUNCTION f_prima_total_XXX(p_num_riesgo a2501000.num_riesgo%TYPE,
+                               p_num_mov    a2501000.num_mov%TYPE)
+        RETURN NUMBER IS 
         --
         l_tot_cap_cedido     NUMBER := 0;
         l_tot_cap_cedido_fac NUMBER := 0;
@@ -498,22 +555,20 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
          WHERE k_origen   = 3 
            AND num_riesgo = p_num_riesgo
-           AND num_mov    <= nvl(p_num_mov, num_mov) 
-           AND cod_secc_reas IN (207, 208); 
+           AND num_mov    <= nvl(p_num_mov, num_mov); 
         --
         -- se sustituye imp_prima por imp_prima_spto, ver 1.02
-        SELECT sum(imp_prima_spto)
+        SELECT sum(imp_prima_spto) 
           INTO l_tot_cap_cedido_fac
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
-         WHERE k_origen = 2 
-           AND num_riesgo   = p_num_riesgo
+         WHERE num_riesgo   = p_num_riesgo
            AND num_mov     <= nvl(p_num_mov, num_mov)
-           AND cod_secc_reas IN (207, 208)
+           AND k_origen     = 2
            AND nom_contrato = 'FACULTATIVO'; 
         --   
         RETURN nvl(l_tot_cap_cedido, 0) + nvl(l_tot_cap_cedido_fac, 0);
         --
-    END f_prima_total_207_208;
+    END f_prima_total_XXX;
     --
     -- calcula el importe total de la prima para seccion 207 y 208
     --      modificacion 2021/10/06 ver. 1.02, se agrega la suma cap_cedido_spto y imp_prima_spto
@@ -560,8 +615,8 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
     -- calcula el importe total de la prima misc
     --      modificacion 2021/10/06 ver. 1.02, se agrega la suma cap_cedido_spto y imp_prima_spto
     FUNCTION f_prima_total_misc(p_num_riesgo a2501000.num_riesgo%TYPE,
-                                p_num_mov    a2501000.num_mov%TYPE) 
-      RETURN NUMBER IS 
+                                p_num_mov    a2501000.num_mov%TYPE)
+        RETURN NUMBER IS 
         --
          l_tot_prima NUMBER := 0;
         --
@@ -651,7 +706,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         trn_k_global.asigna('COD_IDIOMA', 'ES');
         trn_k_global.asigna('JBCOD_CIA', p_cod_cia);
         trn_k_global.asigna('JBNUM_POLIZA', g_num_poliza);
-        --
+                --
         IF p_spto_nulo = 'S' THEN
             trn_k_global.asigna('JBNUM_SPTO', NULL);
         ELSE
@@ -685,6 +740,8 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
     END f_prima_neta;                     
     --
     -- imprimir detalle
+    -- ver. 1.03, se agrega parametro para recibir el nombre de la reaseguradora ( p_nom_reaseguradora )
+    -- ver. 1.04, se agrega parametros para recibir el % distribucion de prima
     PROCEDURE p_imprimir_detalle(p_nom_renglon          VARCHAR2,
                                  p_cap_cedido           NUMBER,
                                  p_prima                NUMBER,
@@ -694,7 +751,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                                  p_resaltar             BOOLEAN := FALSE,
                                  p_form_numerico        BOOLEAN := FALSE,
                                  p_nom_reaseguradora    VARCHAR2 DEFAULT NULL,
-                                 p_pct_participacion    NUMBER   DEFAULT NULL) IS 
+                                 p_pct_participacion    NUMBER   DEFAULT NULL ) IS 
         --
         l_cap_cedido                VARCHAR2(15) := rpad( to_char( p_cap_cedido ,'999,999,999.99' ), 15, ' ');
         l_prima                     VARCHAR2(15) := rpad( to_char( p_prima ,'999,999,999.99' ), 15, ' ');
@@ -706,7 +763,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         l_estilo_celda_porcentual   VARCHAR2(04) := 's78c';
         --                        
     BEGIN 
-        --
+        -- 
         dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
         --
         IF p_resaltar THEN 
@@ -729,11 +786,10 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
             -- exception porcentual
             dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
                                                     nvl((p_porcentaje/100),0),
-                                                    l_estilo_celda_porcentual);   
+                                                    l_estilo_celda_porcentual); 
             --
-            -- nueva columna ver. 1.03                                        
-            IF p_pct_participacion IS NOT NULL THEN     
-                --                                   
+            -- nueva columna ver. 1.04                                        
+            IF p_pct_participacion IS NOT NULL THEN                                          
                 dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, nvl(p_pct_participacion/100,0), 
                                                         l_estilo_celda_porcentual);
             END IF;                                              
@@ -745,177 +801,187 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
             dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,l_comision, dc_k_xml_format_xls_mca.g_unformatted  );
             dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,l_prima_neta, dc_k_xml_format_xls_mca.g_unformatted  );
             dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,nvl(l_porcentaje,'0') ||'%', dc_k_xml_format_xls_mca.g_unformatted );
-            --  
+            -- 
             -- nueva columna ver. 1.04
             IF p_pct_participacion IS NOT NULL THEN  
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
+              dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
                                                       nvl(l_pct_participacion,'0') ||'%', 
                                                       dc_k_xml_format_xls_mca.g_unformatted );
             END IF;  
             --  
         END IF;
-        --    
+        --
         -- nueva columna ver. 1.04
         IF p_pct_participacion IS NULL THEN   
             dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,'', dc_k_xml_format_xls_mca.g_unformatted  );
         END IF;  
-        --    
+        --
+        -- ver. 1.03
+        IF p_nom_reaseguradora IS NOT NULL THEN
+            --
+            dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, p_nom_reaseguradora);
+            --
+        END IF;
+        --           
     END p_imprimir_detalle;
     --
     -- procesa los datos de las secciones 207 y 208
     --      modificacion 2021/10/06 ver. 1.02, se agrega la suma cap_cedido_spto y imp_prima_spto
-    PROCEDURE p_procesar_207_208(p_num_riesgo a2501000.num_riesgo%TYPE,
-	                             p_num_mov    a2501000.num_mov%TYPE) IS 
+    PROCEDURE p_procesar_principal(p_num_riesgo a2501000.num_riesgo%TYPE,
+	                               p_num_mov    a2501000.num_mov%TYPE) IS 
         --
         -- suma cedido
         CURSOR c_suma_cedido IS
-        SELECT sum(decode(cod_secc_reas, 208, 0, cap_cedido_spto)),
-               sum(decode(cod_secc_reas, 208, 0, imp_prima_spto))
+        SELECT sum(cap_cedido_spto)
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
          WHERE k_origen = 3 -- contrato
            AND num_riesgo = p_num_riesgo
            AND num_mov   <= nvl(p_num_mov, num_mov)
-           AND cod_secc_reas IN (207, 208)
            AND nom_contrato <> 'FACULTATIVO'; 
         --
         -- suma cedido facultativo
         CURSOR c_suma_cedido_fac IS
-        SELECT sum(decode(cod_secc_reas, 208, 0, cap_cedido_spto)),
-               sum(decode(cod_secc_reas, 208, 0, imp_prima_spto))
+        SELECT sum(cap_cedido_spto)
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
          WHERE k_origen = 1 
            AND num_riesgo = p_num_riesgo
            AND num_mov   <= nvl(p_num_mov, num_mov)
-           AND cod_secc_reas IN (207, 208)
-           AND nom_contrato = 'FACULTATIVO';                       
+           AND nom_contrato = 'FACULTATIVO';      
+
+        -- total cedido de la seccion
+        CURSOR c_suma_cedido_sec(pc_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
+        SELECT sum(cap_cedido_spto + imp_prima_spto)
+		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
+         WHERE k_origen = 3 -- contrato
+           AND num_riesgo = p_num_riesgo
+           AND num_mov   <= nvl(p_num_mov, num_mov)
+           AND cod_secc_reas = pc_cod_secc_reas
+           AND nom_contrato <> 'FACULTATIVO';                     
         --                       
         l_nom_cia_rea        VARCHAR2(400);  
         l_salto_linea        BOOLEAN := TRUE;
         l_tot_cap_cedido     NUMBER := 0;
         l_tot_cap_cedido_fac NUMBER := 0;
-        l_tot_pri_cedido     NUMBER := 0;
-        l_tot_pri_cedido_fac NUMBER := 0;
+        l_tot_cap_cedido_sec NUMBER := 0;
         --                     
     BEGIN
         --
         OPEN c_suma_cedido;
-        FETCH c_suma_cedido INTO l_tot_cap_cedido, l_tot_pri_cedido;
+        FETCH c_suma_cedido INTO l_tot_cap_cedido;
         CLOSE c_suma_cedido;
         --
         OPEN c_suma_cedido_fac;
-        FETCH c_suma_cedido_fac INTO l_tot_cap_cedido_fac, l_tot_pri_cedido_fac;
+        FETCH c_suma_cedido_fac INTO l_tot_cap_cedido_fac;
         CLOSE c_suma_cedido_fac;
         --
         -- contrato
-        FOR r_secciones IN c_secciones_207_208(p_num_riesgo, p_num_mov) LOOP
+        FOR r_secciones IN c_secciones_XXX(p_num_riesgo, p_num_mov) LOOP
             --
-            dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
-            dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                    'Secci' || chr(243) || 'n: ' ||
-                                                    r_secciones.nom_secc_reas,
-                                                    dc_k_xml_format_xls_mca.g_text_bold,
-                                                    NULL,
-                                                    NULL,
-                                                    5);
+            OPEN c_suma_cedido_sec( r_secciones.cod_secc_reas );
+            FETCH c_suma_cedido_sec INTO l_tot_cap_cedido_sec;
+            CLOSE c_suma_cedido_sec;
             --
-            -- detalle del reporte
-            g_tot_sec_comision   := 0;
-            g_tot_sec_prima_neta := 0;
-            g_tot_sec_pct        := 0;
-            --
-            -- detalle seccion 207 y 208
-            FOR r_detalles IN c_detalle_207_208(p_num_riesgo,
-                                                p_num_mov,
-                                                r_secciones.cod_secc_reas) LOOP
-                --
-                IF r_secciones.cod_secc_reas = 208 THEN
-                    r_detalles.cap_cedido_spto := 0;   
-                END IF;
-                --
-                -- acumulados
-                g_loc_prima_neta := f_prima_neta(r_detalles.imp_prima_spto,
-                                                 r_detalles.ict_comision_spto);
-                --
-                -- % capital cedido
-                IF (nvl(l_tot_cap_cedido, 0) + nvl(l_tot_cap_cedido_fac, 0)) > 0 THEN
-                    g_loc_pct := r_detalles.cap_cedido_spto /
-                                 (nvl(l_tot_cap_cedido, 0) +
-                                 nvl(l_tot_cap_cedido_fac, 0)) * 100;
-                ELSE
-                    g_loc_pct := 0;    
-                END IF;
-                --
-                -- % prima bruta v1.41
-                IF (nvl(l_tot_pri_cedido, 0) + nvl(l_tot_pri_cedido_fac, 0)) > 0 THEN
-                    r_detalles.pct_participacion := r_detalles.imp_prima_spto /
-                                 (nvl(l_tot_pri_cedido, 0) +
-                                 nvl(l_tot_pri_cedido_fac, 0)) * 100;
-                ELSE
-                    r_detalles.pct_participacion := 0;    
-                END IF;
-                --
-                -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
-                g_tot_sec_comision   := g_tot_sec_comision +
-                                        nvl(r_detalles.ict_comision_spto, 0);
-                g_tot_sec_prima_neta := g_tot_sec_prima_neta + g_loc_prima_neta; 
-                g_tot_sec_pct        := g_tot_sec_pct + g_loc_pct;
-                --    
-                g_tot_cap_cedido := g_tot_cap_cedido + r_detalles.cap_cedido_spto;
-                g_tot_comision   := g_tot_comision +
-                                    nvl(r_detalles.ict_comision_spto, 0);
-                g_tot_prima_neta := g_tot_prima_neta + g_loc_prima_neta; 
-                g_tot_pct        := g_tot_pct + g_loc_pct;           
-                --
-                IF instr(upper(r_detalles.nom_contrato), 'CUOTA') > 0 THEN
-					IF r_detalles.cod_cia_rea = '999999' THEN
-						l_nom_cia_rea := ' Retenido';
-					ELSE
-						l_nom_cia_rea := nvl(r_detalles.nom_cia_rea, ' Cedido');
-					END IF;
-				ELSE
-					l_nom_cia_rea := '';	
-				END IF;
-                --
-                IF (nvl(r_detalles.cap_cedido_spto,0) + nvl(r_detalles.imp_prima_spto,0) + nvl(r_detalles.ict_comision_spto,0)) <> 0 THEN
-                    p_imprimir_detalle(r_detalles.nom_contrato || ' ' || l_nom_cia_rea, 
-                                    r_detalles.cap_cedido_spto, 
-                                    r_detalles.imp_prima_spto, 
-                                    r_detalles.ict_comision_spto, 
-                                    g_loc_prima_neta,
-                                    g_loc_pct,
-                                    FALSE,
-                                    TRUE,
-                                    NULL,
-                                    r_detalles.pct_participacion);
-                END IF;
-                --
-            END LOOP;
-            --
-            -- total de la seccion 207 Y 208
-            FOR r_acumulado IN c_acumulado_207_208(p_num_riesgo,
-                                                   p_num_mov,
-                                                   r_secciones.cod_secc_reas) LOOP
-                --
-                IF r_secciones.cod_secc_reas = 208 THEN
-                    r_acumulado.cap_cedido_spto := 0;   
-                END IF;
-                --
-                p_imprimir_detalle('Sub Totales: ' || r_secciones.cod_secc_reas,
-                                   r_acumulado.cap_cedido_spto,
-                                   r_acumulado.imp_prima_spto,
-                                   g_tot_sec_comision,
-                                   g_tot_sec_prima_neta,
-                                   g_tot_sec_pct,
-                                   TRUE,
-                                   TRUE,
-                                   NULL,
-                                   NULL);
+            IF l_tot_cap_cedido_sec <> 0 THEN
                 --
                 dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
-                l_salto_linea := FALSE;
-                --  
-            END LOOP;
-            --
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
+                                                        'Secci' || chr(243) || 'n: ' ||
+                                                        r_secciones.nom_secc_reas,
+                                                        dc_k_xml_format_xls_mca.g_text_bold,
+                                                        NULL,
+                                                        NULL,
+                                                        5);
+                --
+                -- detalle del reporte
+                g_tot_sec_comision   := 0;
+                g_tot_sec_prima_neta := 0;
+                g_tot_sec_pct        := 0;
+                --
+                -- detalle seccion 
+                FOR r_detalles IN c_detalle_XXX(p_num_riesgo,
+                                                p_num_mov,
+                                                r_secciones.cod_secc_reas) LOOP                           
+                    --
+                    -- acumulados
+                    -- v 1.02
+                    g_loc_prima_neta := f_prima_neta(r_detalles.imp_prima_spto,
+                                                    r_detalles.ict_comision_spto);
+                    --
+                    -- v 1.02
+                    IF (nvl(l_tot_cap_cedido, 0) + nvl(l_tot_cap_cedido_fac, 0)) > 0 THEN
+                        g_loc_pct := r_detalles.cap_cedido_spto / 
+                                    (nvl(l_tot_cap_cedido, 0) +
+                                    nvl(l_tot_cap_cedido_fac, 0)) * 100;
+                    ELSE
+                        g_loc_pct := 0;    
+                    END IF;
+                    -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
+                    g_tot_sec_comision   := g_tot_sec_comision +
+                                            nvl(r_detalles.ict_comision_spto, 0);
+                    g_tot_sec_prima_neta := g_tot_sec_prima_neta + g_loc_prima_neta; 
+                    g_tot_sec_pct        := g_tot_sec_pct + g_loc_pct;
+                    --    
+                    -- v 1.02
+                    g_tot_cap_cedido := g_tot_cap_cedido + r_detalles.cap_cedido_spto;
+                    g_tot_comision   := g_tot_comision +
+                                        nvl(r_detalles.ict_comision_spto, 0);
+                    g_tot_prima_neta := g_tot_prima_neta + g_loc_prima_neta; 
+                    g_tot_pct        := g_tot_pct + g_loc_pct;           
+                    --
+                    IF r_detalles.cod_cia_rea = '999999' THEN
+                        l_nom_cia_rea           := ' Retenido';
+                        r_detalles.nom_cia_rea  := NULL;
+                    ELSE
+                        --
+                        -- ver. 1.03 se agrega condicion para establecer el valor de la
+                        -- reaseguradora, solo para el ramo FINANZAS (501)
+                        IF g_cod_ramo = 501 THEN 
+                            l_nom_cia_rea := ' Cedido';
+                        ELSE    
+                            l_nom_cia_rea := nvl(r_detalles.nom_cia_rea, ' Cedido');
+                            r_detalles.nom_cia_rea := NULL;
+                        END IF;   
+                        -- 
+                    END IF;
+                    --
+                    --IF (nvl(r_detalles.cap_cedido_spto,0) + nvl(r_detalles.imp_prima_spto,0) + nvl(r_detalles.ict_comision_spto,0)) <> 0 THEN
+                        p_imprimir_detalle(r_detalles.nom_contrato || ' ' || l_nom_cia_rea, 
+                                        r_detalles.cap_cedido_spto, 
+                                        r_detalles.imp_prima_spto, 
+                                        r_detalles.ict_comision_spto, 
+                                        g_loc_prima_neta,
+                                        g_loc_pct,
+                                        FALSE,
+                                        TRUE,
+                                        r_detalles.nom_cia_rea,
+                                        r_detalles.pct_participacion );
+                    --END IF;                    
+                    --
+                END LOOP;
+                --
+                -- total de la seccion
+                FOR r_acumulado IN c_acumulado_XXX(p_num_riesgo,
+                                                p_num_mov,
+                                                r_secciones.cod_secc_reas) LOOP
+                    --
+                    p_imprimir_detalle('Sub Totales: ' || r_secciones.cod_secc_reas,
+                                    r_acumulado.cap_cedido_spto,
+                                    r_acumulado.imp_prima_spto,
+                                    g_tot_sec_comision,
+                                    g_tot_sec_prima_neta,
+                                    g_tot_sec_pct,
+                                    TRUE,
+                                    TRUE,
+                                    NULL,
+                                    NULL);
+                    --
+                    dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
+                    l_salto_linea := FALSE;
+                    --  
+                END LOOP;
+                --
+            END IF;
+            --    
         END LOOP;
         --
         -- detalle del reporte
@@ -925,8 +991,8 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         g_tot_sec_prima_neta := 0;
         g_tot_sec_pct        := 0; 
         --
-        -- facultativo
-        FOR r_secciones IN c_secciones_207_208(p_num_riesgo, p_num_mov) LOOP
+        -- facultativo proporcional
+        FOR r_secciones IN c_secciones_XXX(p_num_riesgo, p_num_mov) LOOP
             --
             IF l_salto_linea THEN
                 dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
@@ -934,9 +1000,10 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
             END IF;    
             --
             -- detalle facultativo 207 y 208
-            FOR r_detalles IN c_detalle_fac_207_208(p_num_riesgo,
-                                                    p_num_mov,
-                                                    r_secciones.cod_secc_reas) LOOP
+            FOR r_detalles IN c_detalle_fac_XXX(p_num_riesgo,
+                                                p_num_mov,
+                                                r_secciones.cod_secc_reas) LOOP
+                                
                 --
                 -- acumulados
                 g_loc_prima_neta := f_prima_neta(r_detalles.imp_prima_spto,
@@ -945,7 +1012,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                 IF (nvl(l_tot_cap_cedido, 0) + nvl(l_tot_cap_cedido_fac, 0)) > 0 THEN
                     g_loc_pct := r_detalles.cap_cedido_spto /
                                  (nvl(l_tot_cap_cedido, 0) +
-                                 nvl(l_tot_cap_cedido_fac, 0)) * 100;
+                                 nvl(l_tot_cap_cedido_fac, 0)) * 100; 
                 ELSE
                     g_loc_pct := 0;    
                 END IF;
@@ -955,9 +1022,6 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                 g_tot_sec_prima_neta := g_tot_sec_prima_neta + g_loc_prima_neta; 
                 g_tot_sec_pct        := g_tot_sec_pct + g_loc_pct;
                 --
-                IF r_secciones.cod_secc_reas = 208 THEN
-                    r_detalles.cap_cedido_spto := 0;   
-                END IF;
                 g_tot_sec_cap_cedido := g_tot_sec_cap_cedido +
                                         r_detalles.cap_cedido_spto;
                 g_tot_sec_prima      := g_tot_sec_prima + r_detalles.imp_prima_spto;
@@ -982,22 +1046,80 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
             END LOOP;
            
         END LOOP;
+        -- 2021/10/19 CARRIERHOUSE - RGUERRA
+        -- facultativo no proporcional, se agrega para el facultativo no proporcional
+        IF g_tot_sec_prima = 0 THEN
+            FOR r_secciones IN c_secciones_XXX(p_num_riesgo, p_num_mov) LOOP
+                --
+                IF l_salto_linea THEN
+                    dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
+                    l_salto_linea := FALSE;
+                END IF;    
+                --
+                -- detalle facultativo 207 y 208
+                FOR r_detalles IN c_detalle_fac_noproporc(p_num_riesgo,
+                                                    p_num_mov,
+                                                    r_secciones.cod_secc_reas) LOOP                                
+                    --
+                    -- acumulados
+                    g_tot_prima      := g_tot_prima + r_detalles.imp_prima_spto;
+                    g_loc_prima_neta := f_prima_neta(r_detalles.imp_prima_spto,
+                                                    r_detalles.imp_comision);
+                    --
+                    IF (nvl(l_tot_cap_cedido, 0) + nvl(l_tot_cap_cedido_fac, 0)) > 0 THEN
+                        g_loc_pct := r_detalles.cap_cedido_spto /
+                                    (nvl(l_tot_cap_cedido, 0) +
+                                    nvl(l_tot_cap_cedido_fac, 0)) * 100; 
+                    ELSE
+                        g_loc_pct := 0;    
+                    END IF;
+                    -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
+                    g_tot_sec_comision   := g_tot_sec_comision +
+                                            nvl(r_detalles.imp_comision, 0);
+                    g_tot_sec_prima_neta := g_tot_sec_prima_neta + g_loc_prima_neta; 
+                    g_tot_sec_pct        := g_tot_sec_pct + g_loc_pct;
+                    --
+                    g_tot_sec_cap_cedido := g_tot_sec_cap_cedido +
+                                            r_detalles.cap_cedido_spto;
+                    g_tot_sec_prima      := g_tot_sec_prima + NVL(r_detalles.imp_prima_spto,0);
+                    --    
+                    g_tot_cap_cedido := g_tot_cap_cedido + r_detalles.cap_cedido_spto;
+                    g_tot_comision   := g_tot_comision +
+                                        nvl(r_detalles.imp_comision, 0);
+                    g_tot_prima_neta := g_tot_prima_neta + g_loc_prima_neta; 
+                    g_tot_pct        := g_tot_pct + g_loc_pct;           
+                    --
+                    p_imprimir_detalle(r_detalles.nom_contrato || ' Secci' || chr(243) ||
+                                    'n (' || r_secciones.cod_secc_reas || ')', 
+                                    r_detalles.cap_cedido_spto, 
+                                    r_detalles.imp_prima_spto, 
+                                    r_detalles.imp_comision, 
+                                    g_loc_prima_neta,
+                                    g_loc_pct,
+                                    FALSE,
+                                    TRUE,
+                                    NULL,
+                                    r_detalles.pct_participacion);
+                END LOOP;
+                --
+            END LOOP;
+        END IF;
         --
         IF g_tot_sec_prima > 0 THEN
             p_imprimir_detalle('Total Secci' || chr(243) || 'n Facultativo:',
-                               g_tot_sec_cap_cedido,
-                               g_tot_sec_prima,
-                               g_tot_sec_comision,
-                               g_tot_sec_prima_neta,
-                               g_tot_sec_pct,
-                               TRUE,
-                               TRUE);
+                            g_tot_sec_cap_cedido,
+                            g_tot_sec_prima,
+                            g_tot_sec_comision,
+                            g_tot_sec_prima_neta,
+                            g_tot_sec_pct,
+                            TRUE,
+                            TRUE);
             --
             dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
             --
         END IF;            
         --
-        -- totales del mOvimiento 207, 208
+        -- totales del mOvimiento 
         p_imprimir_detalle('Totales:',
                            g_tot_cap_cedido,
                            g_tot_prima,
@@ -1007,7 +1129,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                            TRUE,
                            TRUE);
         --
-    END p_procesar_207_208;
+    END p_procesar_principal;
     --
     -- procesa los datos de las secciones miscelaneos
     PROCEDURE p_procesar_misc(p_num_riesgo a2501000.num_riesgo%TYPE,
@@ -1016,25 +1138,15 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         CURSOR c_cedido_misc(p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
         SELECT sum(cap_cedido_spto)
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
-         WHERE k_origen IN (2,3)
+         WHERE k_origen = 3 
            AND num_riesgo = p_num_riesgo
-		   AND num_mov = nvl(p_num_mov,num_mov)
+		   AND num_mov = p_num_mov
            AND cod_secc_reas = p_cod_secc_reas
-           AND imp_prima <> 0;  
-        -- 
-        -- comision facultativo
-        CURSOR c_com_fac_misc(p_cod_secc_reas a2501000.cod_secc_reas%TYPE) IS
-        SELECT sum(ict_comision_spto)
-		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
-         WHERE k_origen = 2 
-           AND num_riesgo = p_num_riesgo
-		   AND num_mov = nvl(p_num_mov,num_mov)
-           AND cod_secc_reas = p_cod_secc_reas;                          
+           AND imp_prima <> 0;                       
         --
         l_salto_linea         BOOLEAN := TRUE;
         l_nom_cia_rea         VARCHAR2(400);
         l_tot_cap_cedido_misc NUMBER := 0;
-        l_com_factultativo    NUMBER := 0;
         --                     
     BEGIN 
         --
@@ -1073,8 +1185,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                 --
                 -- acumulados
                 g_loc_prima_neta := f_prima_neta(r_detalles.imp_prima_spto,
-                                                 nvl(r_detalles.pct_comision, 0) + 
-                                                 nvl(r_detalles.ict_comision_spto,0));
+                                                 r_detalles.ict_comision_spto);
                 --
                 IF (nvl(l_tot_cap_cedido_misc, 0)) > 0 THEN
                     g_loc_pct := r_detalles.cap_cedido_spto /
@@ -1084,39 +1195,28 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                 END IF;
                 -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
                 g_tot_sec_comision   := g_tot_sec_comision +
-                                        nvl(r_detalles.pct_comision, 0) + 
                                         nvl(r_detalles.ict_comision_spto, 0);
                 g_tot_sec_prima_neta := g_tot_sec_prima_neta + g_loc_prima_neta; 
                 g_tot_sec_pct        := g_tot_sec_pct + g_loc_pct;
                 --
-                IF r_detalles.nom_cia_rea IS NOT NULL THEN
-                    l_nom_cia_rea := r_detalles.nom_cia_rea;
-                ELSE    
-                    IF instr(upper(r_detalles.nom_contrato), 'CUOTA') > 0 THEN
-                        IF r_detalles.cod_cia_rea = '999999' THEN
-                            l_nom_cia_rea := ' Retenido';
-                        ELSE
-                            l_nom_cia_rea := nvl(r_detalles.nom_cia_rea, ' Cedido');
-                        END IF;
-                    ELSE
-                        l_nom_cia_rea := '';	
-                    END IF;
-                END IF;    
+                IF instr(upper(r_detalles.nom_contrato), 'CUOTA') > 0 THEN
+					IF r_detalles.cod_cia_rea = '999999' THEN
+						l_nom_cia_rea := ' Retenido';
+					ELSE
+						l_nom_cia_rea := nvl(r_detalles.nom_cia_rea, ' Cedido');
+					END IF;
+				ELSE
+					l_nom_cia_rea := '';	
+				END IF;
                 --
-                -- g_tot_cap_cedido :=  g_tot_cap_cedido +  r_detalles.cap_cedido
-                IF nvl(r_detalles.cap_cedido_spto,0) + nvl(r_detalles.imp_prima_spto,0) + nvl(r_detalles.ict_comision_spto,0) <> 0 THEN
-                    --
-                    p_imprimir_detalle(r_detalles.nom_contrato || ' ' || l_nom_cia_rea, 
-                                    r_detalles.cap_cedido_spto, 
-                                    r_detalles.imp_prima_spto, 
-                                    nvl(r_detalles.pct_comision, 0) + nvl(r_detalles.ict_comision_spto,0), 
-                                    g_loc_prima_neta,
-                                    g_loc_pct,
-                                    FALSE,
-                                    TRUE,
-                                    NULL,
-                                    r_detalles.pct_participacion);
-                END IF;                    
+                p_imprimir_detalle(r_detalles.nom_contrato || ' ' || l_nom_cia_rea, 
+                                   r_detalles.cap_cedido_spto, 
+                                   r_detalles.imp_prima_spto, 
+                                   r_detalles.ict_comision_spto, 
+                                   g_loc_prima_neta,
+                                   g_loc_pct,
+                                   FALSE,
+                                   TRUE);
                 --
             END LOOP;
             --
@@ -1129,21 +1229,14 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                     r_acumulado.cap_cedido := 0;   
                 END IF;
                 --
-                -- calculo de comision facultativo
-                OPEN c_com_fac_misc( r_secciones.cod_secc_reas );
-                FETCH c_com_fac_misc INTO l_com_factultativo;
-                CLOSE c_com_fac_misc;
-                --
-                -- g_tot_sec_comision := g_tot_sec_comision + nvl(l_com_factultativo, 0);
-                -- g_tot_sec_prima_neta := r_acumulado.imp_prima - nvl(g_tot_sec_comision, 0);
-                p_imprimir_detalle('Sub Totales: '||r_secciones.cod_secc_reas,
-                                   r_acumulado.cap_cedido_spto,
-                                   r_acumulado.imp_prima_spto,
-                                   g_tot_sec_comision,
-                                   g_tot_sec_prima_neta,
-                                   g_tot_sec_pct,
-                                   TRUE,
-                                   TRUE);
+                p_imprimir_detalle('Sub Totales: ' || r_secciones.cod_secc_reas,
+                         r_acumulado.cap_cedido_spto,
+                         r_acumulado.imp_prima_spto,
+                         g_tot_sec_comision,
+                         g_tot_sec_prima_neta,
+                         g_tot_sec_pct,
+                         TRUE,
+                         TRUE);
                 --
                 dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
                 l_salto_linea := FALSE;
@@ -1166,7 +1259,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         l_acu_pct_rea    NUMBER := 0;
         --                          
     BEGIN 
-        --
+        -- 
         dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
         --
         FOR r_reasegurador IN c_reaseguradora(p_num_riesgo, p_num_mov) LOOP
@@ -1206,13 +1299,13 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         --
         IF l_imp_prima > 0 THEN
             p_imprimir_detalle('Total Reaseguradoras:', 
-                                l_cap_cedido, 
-                                l_imp_prima, 
-                                l_imp_comision, 
-                                l_imp_prima_neta,
-                                l_acu_pct_rea,
-                                TRUE,
-                                TRUE);
+                               l_cap_cedido, 
+                               l_imp_prima, 
+                               l_imp_comision, 
+                               l_imp_prima_neta,
+                               l_acu_pct_rea,
+                               TRUE,
+                               TRUE);
         END IF;                    
         --
     END p_procesar_reaseguradoras;
@@ -1294,12 +1387,12 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 		l_desc_ubi := '';
 		--
 		l_ok := em_k_a2000020.f_lee_riesgo_vigente(g_cod_cia,
-                              					   p_num_poliza  => g_num_poliza,
-                               					   p_num_apli    => 0,
-                               					   p_num_riesgo  => p_num_riesgo,
-                               					   p_num_periodo => 1,
-                               					   p_cod_ramo    => g_cod_ramo,
-                               					   p_tip_nivel   => 2);
+                                                   p_num_poliza  => g_num_poliza,
+                                                   p_num_apli    => 0,
+                                                   p_num_riesgo  => p_num_riesgo,
+                                                   p_num_periodo => 1,
+                                                   p_cod_ramo    => g_cod_ramo,
+                                                   p_tip_nivel   => 2);
 		--										  
 		IF l_ok THEN 
 			--
@@ -1328,7 +1421,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 			END IF;	
 			--
 			l_cod_campo := 'DES_UBI2';
-			em_k_a2000020.p_devuelve_dv_riesgo(l_cod_campo, 
+			em_k_a2000020.p_devuelve_dv_riesgo(l_cod_campo,
                                                l_val_campo,
                                                l_txt_campo);
 			l_txt_des_ubi2 := nvl(l_val_campo, l_txt_campo);	
@@ -1397,7 +1490,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 		g_tab_topTitle(5).topTitle := 'P' || chr(243) || 'liza No. ' ||
                                       l_desc_poliza || ' / ' || g_num_spto ||
 			                          ' Tipo Spto: ' || g_nom_tip_spto ||
-			                          ', Fechas Efecto: ' || 
+			                          ', Fechas Efecto: ' ||
                                       to_char(g_fec_efec_poliza, 'dd-mm-yyyy') ||
 			                          ' Vcto.: ' ||
                                       to_char(g_fec_vcto_poliza, 'dd-mm-yyyy');
@@ -1409,6 +1502,13 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 		g_tab_caption(5).title := 'Prima Neta';
 		g_tab_caption(6).title := 'Porcentaje de Distribuci' || chr(243) || 'n de Suma Asegurada';
         g_tab_caption(7).title := 'Porcentaje de Distribuci' || chr(243) || 'n de Prima';
+        --
+        -- ver 1.03 si el ramo es finanzas (501) aplica
+        IF g_cod_ramo = 501 then
+            -- se agrega la columna
+            g_tab_caption(8).title := 'REASEGURADORA';
+            --
+        END IF;
 		--
 		FOR i IN 1 .. g_tab_caption.count LOOP
 			--
@@ -1528,8 +1628,8 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                 END IF;
                 --
                 IF g_tot_prima = 0 THEN
-                    g_tot_prima := f_prima_total_207_208(r_riesgos.num_riesgo,
-                                                         r_movimientos.num_mov); 
+                    g_tot_prima := f_prima_total_XXX(r_riesgos.num_riesgo,
+                                                     r_movimientos.num_mov); 
                 END IF;
                 --
                 IF g_tot_cedido = 0 THEN
@@ -1551,12 +1651,12 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                                                         NULL,
                                                         5);
                 --
-                p_procesar_207_208(r_riesgos.num_riesgo, r_movimientos.num_mov);
+                p_procesar_principal(r_riesgos.num_riesgo, r_movimientos.num_mov);
                 --
                 g_tot_prima := 0;
                 --
                 -- secciones miscelaneas
-                p_procesar_misc(r_riesgos.num_riesgo, r_movimientos.num_mov);
+                -- p_procesar_misc(r_riesgos.num_riesgo, r_movimientos.num_mov);
                 --
                 -- reaseguradoras
                 p_procesar_reaseguradoras(r_riesgos.num_riesgo,
@@ -1622,4 +1722,4 @@ BEGIN
       		--
 			p_devuelve_error(-20010, '<ra_p_hoja_rec_200> ' || sqlerrm);
 			--
-END ra_p_hoja_tec_200_mni;
+END ra_p_hoja_tec_XXX_mni;

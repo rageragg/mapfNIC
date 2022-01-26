@@ -732,8 +732,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                                                     l_estilo_celda_porcentual);   
             --
             -- nueva columna ver. 1.03                                        
-            IF p_pct_participacion IS NOT NULL THEN     
-                --                                   
+            IF p_pct_participacion IS NOT NULL THEN                                          
                 dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, nvl(p_pct_participacion/100,0), 
                                                         l_estilo_celda_porcentual);
             END IF;                                              
@@ -748,7 +747,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
             --  
             -- nueva columna ver. 1.04
             IF p_pct_participacion IS NOT NULL THEN  
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
+              dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
                                                       nvl(l_pct_participacion,'0') ||'%', 
                                                       dc_k_xml_format_xls_mca.g_unformatted );
             END IF;  
@@ -758,8 +757,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         -- nueva columna ver. 1.04
         IF p_pct_participacion IS NULL THEN   
             dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,'', dc_k_xml_format_xls_mca.g_unformatted  );
-        END IF;  
-        --    
+        END IF;      
     END p_imprimir_detalle;
     --
     -- procesa los datos de las secciones 207 y 208
@@ -769,8 +767,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         --
         -- suma cedido
         CURSOR c_suma_cedido IS
-        SELECT sum(decode(cod_secc_reas, 208, 0, cap_cedido_spto)),
-               sum(decode(cod_secc_reas, 208, 0, imp_prima_spto))
+        SELECT sum(decode(cod_secc_reas, 208, 0, cap_cedido_spto))
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
          WHERE k_origen = 3 -- contrato
            AND num_riesgo = p_num_riesgo
@@ -780,8 +777,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         --
         -- suma cedido facultativo
         CURSOR c_suma_cedido_fac IS
-        SELECT sum(decode(cod_secc_reas, 208, 0, cap_cedido_spto)),
-               sum(decode(cod_secc_reas, 208, 0, imp_prima_spto))
+        SELECT sum(decode(cod_secc_reas, 208, 0, cap_cedido_spto))
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
          WHERE k_origen = 1 
            AND num_riesgo = p_num_riesgo
@@ -793,17 +789,15 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
         l_salto_linea        BOOLEAN := TRUE;
         l_tot_cap_cedido     NUMBER := 0;
         l_tot_cap_cedido_fac NUMBER := 0;
-        l_tot_pri_cedido     NUMBER := 0;
-        l_tot_pri_cedido_fac NUMBER := 0;
         --                     
     BEGIN
         --
         OPEN c_suma_cedido;
-        FETCH c_suma_cedido INTO l_tot_cap_cedido, l_tot_pri_cedido;
+        FETCH c_suma_cedido INTO l_tot_cap_cedido;
         CLOSE c_suma_cedido;
         --
         OPEN c_suma_cedido_fac;
-        FETCH c_suma_cedido_fac INTO l_tot_cap_cedido_fac, l_tot_pri_cedido_fac;
+        FETCH c_suma_cedido_fac INTO l_tot_cap_cedido_fac;
         CLOSE c_suma_cedido_fac;
         --
         -- contrato
@@ -836,7 +830,6 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                 g_loc_prima_neta := f_prima_neta(r_detalles.imp_prima_spto,
                                                  r_detalles.ict_comision_spto);
                 --
-                -- % capital cedido
                 IF (nvl(l_tot_cap_cedido, 0) + nvl(l_tot_cap_cedido_fac, 0)) > 0 THEN
                     g_loc_pct := r_detalles.cap_cedido_spto /
                                  (nvl(l_tot_cap_cedido, 0) +
@@ -844,16 +837,6 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                 ELSE
                     g_loc_pct := 0;    
                 END IF;
-                --
-                -- % prima bruta v1.41
-                IF (nvl(l_tot_pri_cedido, 0) + nvl(l_tot_pri_cedido_fac, 0)) > 0 THEN
-                    r_detalles.pct_participacion := r_detalles.imp_prima_spto /
-                                 (nvl(l_tot_pri_cedido, 0) +
-                                 nvl(l_tot_pri_cedido_fac, 0)) * 100;
-                ELSE
-                    r_detalles.pct_participacion := 0;    
-                END IF;
-                --
                 -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
                 g_tot_sec_comision   := g_tot_sec_comision +
                                         nvl(r_detalles.ict_comision_spto, 0);
@@ -1623,3 +1606,4 @@ BEGIN
 			p_devuelve_error(-20010, '<ra_p_hoja_rec_200> ' || sqlerrm);
 			--
 END ra_p_hoja_tec_200_mni;
+/

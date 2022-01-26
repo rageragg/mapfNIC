@@ -832,7 +832,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
         --
         -- suma cedido
         CURSOR c_suma_cedido IS
-        SELECT sum(cap_cedido_spto)
+        SELECT sum(cap_cedido_spto), sum(imp_prima_spto)
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
          WHERE k_origen = 3 -- contrato
            AND num_riesgo = p_num_riesgo
@@ -841,7 +841,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
         --
         -- suma cedido facultativo
         CURSOR c_suma_cedido_fac IS
-        SELECT sum(cap_cedido_spto)
+        SELECT sum(cap_cedido_spto), sum(imp_prima_spto)
 		  FROM TABLE(ra_k_hoja_tec_distribucion_mni.f_lista_detalle)
          WHERE k_origen = 1 
            AND num_riesgo = p_num_riesgo
@@ -863,15 +863,17 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
         l_tot_cap_cedido     NUMBER := 0;
         l_tot_cap_cedido_fac NUMBER := 0;
         l_tot_cap_cedido_sec NUMBER := 0;
+        l_tot_pri_cedido     NUMBER := 0;
+        l_tot_pri_cedido_fac NUMBER := 0;
         --                     
     BEGIN
         --
         OPEN c_suma_cedido;
-        FETCH c_suma_cedido INTO l_tot_cap_cedido;
+        FETCH c_suma_cedido INTO l_tot_cap_cedido, l_tot_pri_cedido;
         CLOSE c_suma_cedido;
         --
         OPEN c_suma_cedido_fac;
-        FETCH c_suma_cedido_fac INTO l_tot_cap_cedido_fac;
+        FETCH c_suma_cedido_fac INTO l_tot_cap_cedido_fac, l_tot_pri_cedido_fac;
         CLOSE c_suma_cedido_fac;
         --
         -- contrato
@@ -915,6 +917,16 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                     ELSE
                         g_loc_pct := 0;    
                     END IF;
+                    --
+                    -- v 1.03
+                    IF (nvl(l_tot_pri_cedido, 0) + nvl(l_tot_pri_cedido_fac, 0)) > 0 THEN
+                        r_detalles.pct_participacion := r_detalles.imp_prima_spto / 
+                                    (nvl(l_tot_pri_cedido, 0) +
+                                    nvl(l_tot_pri_cedido_fac, 0)) * 100;
+                    ELSE
+                        g_locr_detalles.pct_participacion_pct := 0;    
+                    END IF;
+                    --
                     -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
                     g_tot_sec_comision   := g_tot_sec_comision +
                                             nvl(r_detalles.ict_comision_spto, 0);
