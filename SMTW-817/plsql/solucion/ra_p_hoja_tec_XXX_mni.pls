@@ -47,8 +47,10 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
     g_tot_sec_comision   NUMBER;
     g_tot_sec_prima_neta NUMBER;
     g_tot_sec_pct        NUMBER;
+    g_tot_sec_pct_prima  NUMBER;
     g_loc_prima_neta     NUMBER;
     g_loc_pct            NUMBER;
+    g_loc_pct_prima      NUMBER;
     g_tot_cap_cedido     NUMBER := 0;
     g_tot_prima          NUMBER := 0;
     g_tot_cedido         NUMBER := 0;
@@ -864,7 +866,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
         l_tot_cap_cedido_fac NUMBER := 0;
         l_tot_cap_cedido_sec NUMBER := 0;
         l_tot_pri_cedido     NUMBER := 0;
-        l_tot_pri_cedido_fac NUMBER := 0;
+        l_tot_pri_cedido_fac NUMBER := 0; 
         --                     
     BEGIN
         --
@@ -898,6 +900,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                 g_tot_sec_comision   := 0;
                 g_tot_sec_prima_neta := 0;
                 g_tot_sec_pct        := 0;
+                g_tot_sec_pct_prima  := 0;
                 --
                 -- detalle seccion 
                 FOR r_detalles IN c_detalle_XXX(p_num_riesgo,
@@ -920,11 +923,11 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                     --
                     -- v 1.03
                     IF (nvl(l_tot_pri_cedido, 0) + nvl(l_tot_pri_cedido_fac, 0)) > 0 THEN
-                        r_detalles.pct_participacion := r_detalles.imp_prima_spto / 
+                        g_loc_pct_prima := r_detalles.imp_prima_spto / 
                                     (nvl(l_tot_pri_cedido, 0) +
                                     nvl(l_tot_pri_cedido_fac, 0)) * 100;
                     ELSE
-                        g_locr_detalles.pct_participacion_pct := 0;    
+                        g_loc_pct_prima := 0;    
                     END IF;
                     --
                     -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
@@ -932,6 +935,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                             nvl(r_detalles.ict_comision_spto, 0);
                     g_tot_sec_prima_neta := g_tot_sec_prima_neta + g_loc_prima_neta; 
                     g_tot_sec_pct        := g_tot_sec_pct + g_loc_pct;
+                    g_tot_sec_pct_prima  := g_tot_sec_pct_prima + g_loc_pct_prima;
                     --    
                     -- v 1.02
                     g_tot_cap_cedido := g_tot_cap_cedido + r_detalles.cap_cedido_spto;
@@ -966,7 +970,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                         FALSE,
                                         TRUE,
                                         r_detalles.nom_cia_rea,
-                                        r_detalles.pct_participacion );
+                                        g_loc_pct_prima );
                     --END IF;                    
                     --
                 END LOOP;
@@ -985,7 +989,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                     TRUE,
                                     TRUE,
                                     NULL,
-                                    NULL);
+                                    g_tot_sec_pct_prima);
                     --
                     dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
                     l_salto_linea := FALSE;
@@ -1002,6 +1006,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
         g_tot_sec_comision   := 0;
         g_tot_sec_prima_neta := 0;
         g_tot_sec_pct        := 0; 
+        g_tot_sec_pct_prima  := 0; 
         --
         -- facultativo proporcional
         FOR r_secciones IN c_secciones_XXX(p_num_riesgo, p_num_mov) LOOP
@@ -1028,11 +1033,20 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                 ELSE
                     g_loc_pct := 0;    
                 END IF;
+                --
+                IF (nvl(l_tot_pri_cedido, 0) + nvl(l_tot_pri_cedido_fac, 0)) > 0 THEN
+                    g_loc_pct_prima := r_detalles.imp_prima_spto /
+                                 (nvl(l_tot_pri_cedido, 0) +
+                                 nvl(l_tot_pri_cedido_fac, 0)) * 100; 
+                ELSE
+                    g_loc_pct_prima := 0;    
+                END IF;
                 -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
                 g_tot_sec_comision   := g_tot_sec_comision +
                                         nvl(r_detalles.imp_comision, 0);
                 g_tot_sec_prima_neta := g_tot_sec_prima_neta + g_loc_prima_neta; 
                 g_tot_sec_pct        := g_tot_sec_pct + g_loc_pct;
+                g_tot_sec_pct_prima  := g_tot_sec_pct_prima + g_loc_pct_prima;
                 --
                 g_tot_sec_cap_cedido := g_tot_sec_cap_cedido +
                                         r_detalles.cap_cedido_spto;
@@ -1054,7 +1068,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                    FALSE,
                                    TRUE,
                                    NULL,
-                                   r_detalles.pct_participacion);
+                                   g_loc_pct_prima);
             END LOOP;
            
         END LOOP;
@@ -1085,11 +1099,20 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                     ELSE
                         g_loc_pct := 0;    
                     END IF;
+                    --
+                    IF (nvl(l_tot_pri_cedido, 0) + nvl(l_tot_pri_cedido_fac, 0)) > 0 THEN
+                        g_loc_pct_prima := r_detalles.imp_prima_spto /
+                                    (nvl(l_tot_pri_cedido, 0) +
+                                    nvl(l_tot_pri_cedido_fac, 0)) * 100; 
+                    ELSE
+                        g_loc_pct_prima := 0;    
+                    END IF;
                     -- g_loc_pct               := f_calcula_pct( r_detalles.cap_cedido );
                     g_tot_sec_comision   := g_tot_sec_comision +
                                             nvl(r_detalles.imp_comision, 0);
                     g_tot_sec_prima_neta := g_tot_sec_prima_neta + g_loc_prima_neta; 
                     g_tot_sec_pct        := g_tot_sec_pct + g_loc_pct;
+                    g_tot_sec_pct_prima  := g_tot_sec_pct_prima + g_loc_pct_prima;
                     --
                     g_tot_sec_cap_cedido := g_tot_sec_cap_cedido +
                                             r_detalles.cap_cedido_spto;
@@ -1111,7 +1134,7 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                     FALSE,
                                     TRUE,
                                     NULL,
-                                    r_detalles.pct_participacion);
+                                    g_loc_pct_prima);
                 END LOOP;
                 --
             END LOOP;
@@ -1125,7 +1148,9 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                             g_tot_sec_prima_neta,
                             g_tot_sec_pct,
                             TRUE,
-                            TRUE);
+                            TRUE,
+                            NULL,
+                            g_tot_sec_pct_prima);
             --
             dc_k_xml_format_xls_mca.p_nueva_fila(g_id_fichero);
             --
