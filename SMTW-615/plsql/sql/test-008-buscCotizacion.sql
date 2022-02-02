@@ -7,12 +7,12 @@ declare
   --
 begin
     --
-    l_parametros := '{ "usuario":"cso_sa07@yahoo.com",' ||
+    l_parametros := '{ "usuario":"mapfre.nicaragua@gmail.com",' ||
                     ' "access_token":"1346990130WINLMOII",'||
                     ' "tipUsuario":"Perito", '|| 
-                    ' "identificacion": "40135CEDS",'||
-                    ' "placa": "",' ||
-                    ' "numeroCotizacion": "2130100036985" }';
+                    ' "identificacion": "999999",'||
+                    ' "placa": "S",' ||
+                    ' "numeroCotizacion": "2130100000028" }';
     --
     em_k_ws_auto_inspeccion.p_buscar_cotizacion_cliente( p_parametros   => l_parametros,
                                             p_cotizacion       => l_ref_datos,

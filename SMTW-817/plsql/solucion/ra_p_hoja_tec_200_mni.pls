@@ -697,7 +697,8 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                                  p_resaltar             BOOLEAN := FALSE,
                                  p_form_numerico        BOOLEAN := FALSE,
                                  p_nom_reaseguradora    VARCHAR2 DEFAULT NULL,
-                                 p_pct_participacion    NUMBER   DEFAULT NULL) IS 
+                                 p_pct_participacion    NUMBER   DEFAULT NULL,
+                                 p_pct_reaseguradora    NUMBER   DEFAULT NULL ) IS 
         --
         l_cap_cedido                VARCHAR2(15) := rpad( to_char( p_cap_cedido ,'999,999,999.99' ), 15, ' ');
         l_prima                     VARCHAR2(15) := rpad( to_char( p_prima ,'999,999,999.99' ), 15, ' ');
@@ -739,7 +740,14 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                 --                                   
                 dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, nvl(p_pct_participacion/100,0), 
                                                         l_estilo_celda_porcentual);
-            END IF;                                              
+            END IF;  
+            --
+            -- nueva columna ver. 1.03                                        
+            IF p_pct_reaseguradora IS NOT NULL THEN     
+                --                                   
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, nvl(p_pct_reaseguradora/100,0), 
+                                                        l_estilo_celda_porcentual);
+            END IF;                                            
             --
         ELSE    
             --   
@@ -1429,6 +1437,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
 		g_tab_caption(5).title := 'Prima Neta';
 		g_tab_caption(6).title := 'Porcentaje de Distribuci' || chr(243) || 'n de Suma Asegurada';
         g_tab_caption(7).title := 'Porcentaje de Distribuci' || chr(243) || 'n de Prima';
+        g_tab_caption(8).title := 'Porcentaje de Participaci' || chr(243) || 'n Reaseguradora';
 		--
 		FOR i IN 1 .. g_tab_caption.count LOOP
 			--

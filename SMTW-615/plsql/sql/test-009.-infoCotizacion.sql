@@ -12,7 +12,7 @@ declare
   --
 begin
     --
-    l_parametros := '{ "access_token":"-224819472TKSZHHUD","numeroCotizacion":"3011001976603" }';
+    l_parametros := '{ "access_token":"-2053680024IZJOXBZW","numeroCotizacion":"2130100036980" }';
     --
     em_k_ws_auto_inspeccion.p_informacion_cotizacion( p_parametros   => l_parametros,
                                             p_cotizacion       => l_ref_datos,
