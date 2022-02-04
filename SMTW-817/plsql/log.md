@@ -7,7 +7,8 @@
 * 26/01/2022    Se reconfigura en el ambiente INT el reaseguro.
 * 26/01/2022    Se modifica el proceso RA_P_HOJA_TEC_200_MNI, en el procedimiento P_PROCESAR_207_208, ver 1.41
 * 26/01/2022    Se modifica el proceso RA_P_HOJA_TEC_XXX_MNI, en el procedimiento P_PROCESAR_207_208, ver 1.41
-* 01/02/2022    Se agrega columna PORCENTAJE PARTICIPACION REASEGURADORA en el proceso RA_P_HOJA_TEC_200_MNI. v 1.42
+* 01/02/2022    Se agrega columna PORCENTAJE PARTICIPACION REASEGURADORA en el proceso RA_P_HOJA_TEC_200_MNI.p_imprimir_detalle v 1.42
+* 04/02/2022    Se agrega columna PORCENTAJE PARTICIPACION REASEGURADORA en el proceso RA_P_HOJA_TEC_XXX_MNI.p_imprimir_detalle v 1.42
                 
 ### Objetos Relacionados
 - ra_k_hoja_tec_distribucion_mni, Paquete de Procesamiento de datos

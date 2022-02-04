@@ -21,6 +21,8 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
     || usuario no suministro el suplemento
     || 2021/10/25 - RGUERRA - 1.04 - (CARRIERHOUSE)
     || Se agrega nueva columna de porcentaje de Distribucion prima
+    || 2022/02/04 - RGUERRA - 1.04 - (CARRIERHOUSE)
+    || Se agrega columna PORCENTAJE PARTICIPACION REASEGURADORA en el proceso RA_P_HOJA_TEC_200_MNI.p_imprimir_detalle
     ||---------------------------------------------------------*/
     --
     g_cod_cia         a2000030.cod_cia%TYPE := p_cod_cia;
@@ -753,7 +755,8 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                  p_resaltar             BOOLEAN := FALSE,
                                  p_form_numerico        BOOLEAN := FALSE,
                                  p_nom_reaseguradora    VARCHAR2 DEFAULT NULL,
-                                 p_pct_participacion    NUMBER   DEFAULT NULL ) IS 
+                                 p_pct_participacion    NUMBER   DEFAULT NULL,
+                                 p_pct_reaseguradora    NUMBER   DEFAULT NULL ) IS 
         --
         l_cap_cedido                VARCHAR2(15) := rpad( to_char( p_cap_cedido ,'999,999,999.99' ), 15, ' ');
         l_prima                     VARCHAR2(15) := rpad( to_char( p_prima ,'999,999,999.99' ), 15, ' ');
@@ -791,10 +794,18 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                                     l_estilo_celda_porcentual); 
             --
             -- nueva columna ver. 1.04                                        
-            IF p_pct_participacion IS NOT NULL THEN                                          
+            IF p_pct_participacion IS NOT NULL THEN       
+                --                                   
                 dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, nvl(p_pct_participacion/100,0), 
                                                         l_estilo_celda_porcentual);
-            END IF;                                              
+            END IF;    
+            --
+            -- nueva columna ver. 1.03                                        
+            IF p_pct_reaseguradora IS NOT NULL THEN     
+                --                                   
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, nvl(p_pct_reaseguradora/100,0), 
+                                                        l_estilo_celda_porcentual);
+            END IF;                                            
             --
         ELSE    
             --   
@@ -811,10 +822,22 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                                       dc_k_xml_format_xls_mca.g_unformatted );
             END IF;  
             --  
+            -- nueva columna ver. 1.04
+            IF p_pct_reaseguradora IS NOT NULL THEN  
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
+                                                      nvl(p_pct_reaseguradora,'0') ||'%', 
+                                                      dc_k_xml_format_xls_mca.g_unformatted );
+            END IF; 
+            --  
         END IF;
         --
         -- nueva columna ver. 1.04
         IF p_pct_participacion IS NULL THEN   
+            dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,'', dc_k_xml_format_xls_mca.g_unformatted  );
+        END IF;  
+        --
+        -- nueva columna ver. 1.04
+        IF p_pct_reaseguradora IS NULL THEN   
             dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,'', dc_k_xml_format_xls_mca.g_unformatted  );
         END IF;  
         --
@@ -970,7 +993,8 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                         FALSE,
                                         TRUE,
                                         r_detalles.nom_cia_rea,
-                                        g_loc_pct_prima );
+                                        g_loc_pct_prima,
+                                        r_detalles.pct_participacion );
                     --END IF;                    
                     --
                 END LOOP;
@@ -1068,7 +1092,8 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                    FALSE,
                                    TRUE,
                                    NULL,
-                                   g_loc_pct_prima);
+                                   g_loc_pct_prima,
+                                   r_detalles.pct_participacion );
             END LOOP;
            
         END LOOP;
@@ -1134,7 +1159,8 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
                                     FALSE,
                                     TRUE,
                                     NULL,
-                                    g_loc_pct_prima);
+                                    g_loc_pct_prima,
+                                    r_detalles.pct_participacion);
                 END LOOP;
                 --
             END LOOP;
@@ -1539,11 +1565,12 @@ create or replace PROCEDURE ra_p_hoja_tec_XXX_mni(p_cod_cia    a2000030.cod_cia%
 		g_tab_caption(5).title := 'Prima Neta';
 		g_tab_caption(6).title := 'Porcentaje de Distribuci' || chr(243) || 'n de Suma Asegurada';
         g_tab_caption(7).title := 'Porcentaje de Distribuci' || chr(243) || 'n de Prima';
+        g_tab_caption(8).title := 'Porcentaje de Participaci' || chr(243) || 'n Reaseguradora';
         --
         -- ver 1.03 si el ramo es finanzas (501) aplica
         IF g_cod_ramo = 501 then
             -- se agrega la columna
-            g_tab_caption(8).title := 'REASEGURADORA';
+            g_tab_caption(9).title := 'REASEGURADORA';
             --
         END IF;
 		--

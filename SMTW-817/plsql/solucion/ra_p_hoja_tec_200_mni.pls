@@ -4,7 +4,7 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                                                   p_num_riesgo a2501500.num_riesgo%TYPE,
                                                   p_num_mov    a2501600.num_mov%TYPE,
                                                   p_spto_nulo  VARCHAR2 DEFAULT 'S') IS
-    --
+    -- 
     /* -------------------- VERSION = 1.03 -------------------- */
     --
     /* -------------------- MODIFICACIONES -----------------
@@ -17,6 +17,8 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
     || usuario no suministro el suplemento
     || 2021/10/25 - RGUERRA - 1.03 - (CARRIERHOUSE)
     || Se agrega nueva columna de porcentaje de Distribucion prima
+    || 2022/02/04 - RGUERRA - 1.04 - (CARRIERHOUSE)
+    || Se agrega columna PORCENTAJE PARTICIPACION REASEGURADORA en el proceso RA_P_HOJA_TEC_200_MNI.p_imprimir_detalle
     ||---------------------------------------------------------*/
     --
     g_cod_cia         a2000030.cod_cia%TYPE := p_cod_cia;
@@ -764,6 +766,13 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                                                       dc_k_xml_format_xls_mca.g_unformatted );
             END IF;  
             --  
+            -- nueva columna ver. 1.04
+            IF p_pct_reaseguradora IS NOT NULL THEN  
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
+                                                      nvl(p_pct_reaseguradora,'0') ||'%', 
+                                                      dc_k_xml_format_xls_mca.g_unformatted );
+            END IF; 
+            --  
         END IF;
         --    
         -- nueva columna ver. 1.04
@@ -900,7 +909,9 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                                     FALSE,
                                     TRUE,
                                     NULL,
-                                    g_loc_pct_prima);
+                                    g_loc_pct_prima,
+                                    r_detalles.pct_participacion
+                                );
                 END IF;
                 --
             END LOOP;
@@ -1004,7 +1015,9 @@ CREATE OR REPLACE PROCEDURE ra_p_hoja_tec_200_mni(p_cod_cia    a2000030.cod_cia%
                                    FALSE,
                                    TRUE,
                                    NULL,
-                                   g_loc_pct_prima);
+                                   g_loc_pct_prima,
+                                   r_detalles.pct_participacion
+                            );
             END LOOP;
            
         END LOOP;
