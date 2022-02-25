@@ -14,6 +14,14 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
         || -------------------------------------------------
         || 2022/02/25 - CARRIERHOUSE - RGUERRA v.1.01
         ||  - Se elimina la colimna CIA 
+        ||  - Se elimina el prefijo de tipo de documento en la columna CEDULA
+        ||  - Se agregar columna del tipo de documento
+        ||  - Crear una columna llamada RUC 
+        ||  - De la columna Número de póliza quitar la descripción de la modalidad del principio
+        ||  - Reemplazar la columna ramo por columna modalidad 
+        ||  - Se debe colocar una columna con el tipo de persona
+        ||  - Agregar columna con el tipo de vehículo
+        ||  - Se crea la funcion pi_datos_variables para optimizar el codigo
     */
     --
     g_tab_columns               dc_k_xml_format_xls_mca.t_tab_columns;
@@ -187,26 +195,44 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
             --
             g_tab_caption(2).title := 'NOMBRES';
             g_tab_caption(3).title := 'APELLIDOS';
-            g_tab_caption(4).title := 'CEDULA';
-            g_tab_caption(5).title := 'DIRECCION';
-            g_tab_caption(6).title := 'TEL1';
-            g_tab_caption(7).title := 'CELULAR';
-            g_tab_caption(8).title := 'FEMISION';
-            g_tab_caption(9).title := 'FDESDE';
-            g_tab_caption(10).title := 'FHASTA';
-            g_tab_caption(11).title := 'RAMO';
-            g_tab_caption(12).title := 'MARCA';
-            g_tab_caption(13).title := 'MODELO';
-            g_tab_caption(14).title := 'AÑO';
-            g_tab_caption(15).title := 'COLOR';
-            g_tab_caption(16).title := 'PLACA';
-            g_tab_caption(17).title := 'MOTOR';
-            g_tab_caption(18).title := 'CHASIS';
-            g_tab_caption(19).title := 'SUMAASEGURADA';
-            g_tab_caption(20).title := 'PNETA';
-            g_tab_caption(21).title := 'PTOTAL';
-            g_tab_caption(22).title := 'IDAGENTE';
-            g_tab_caption(23).title := 'IDEJECUTIVO';
+            --
+            -- ! Se agrega columna del tipo de documento
+            g_tab_caption(4).title := 'TIP. DOC.';
+            --
+            g_tab_caption(5).title := 'CEDULA';
+            --
+            -- ! Se agrega columna RUC
+            g_tab_caption(6).title := 'RUC';
+            --
+            -- ! Se debe colocar una columna con el tipo de persona
+            g_tab_caption(7).title := 'TIP. PERSONA';
+            --
+            g_tab_caption(8).title := 'DIRECCION';
+            g_tab_caption(9).title := 'TEL1';
+            g_tab_caption(10).title := 'CELULAR';
+            g_tab_caption(11).title := 'FEMISION';
+            g_tab_caption(12).title := 'FDESDE';
+            g_tab_caption(13).title := 'FHASTA';
+            --
+            -- ! Se sustituye  la columna de RAMO por Modalidad
+            g_tab_caption(14).title := 'MODALIDAD';
+            --
+            g_tab_caption(15).title := 'MARCA';
+            g_tab_caption(16).title := 'MODELO';
+            g_tab_caption(17).title := 'AÑO';
+            g_tab_caption(18).title := 'COLOR';
+            g_tab_caption(19).title := 'PLACA';
+            g_tab_caption(20).title := 'MOTOR';
+            g_tab_caption(21).title := 'CHASIS';
+            --
+            -- ! Agregar columna con el tipo de vehículo
+            g_tab_caption(22).title := 'TIP. VEHICULO';
+            --
+            g_tab_caption(23).title := 'SUMAASEGURADA';
+            g_tab_caption(24).title := 'PNETA';
+            g_tab_caption(25).title := 'PTOTAL';
+            g_tab_caption(26).title := 'IDAGENTE';
+            g_tab_caption(27).title := 'IDEJECUTIVO';
             --
             FOR reg IN 1 .. g_tab_caption.count LOOP
                 g_tab_columns(reg).ancho := '150';
@@ -237,7 +263,9 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
             l_nom_agt             VARCHAR2(200);
             l_primera_vez         VARCHAR(1) := 'S';
             l_cod_modalidad       a2000020.cod_campo%TYPE;
-            l_nom_modalidad       g2990004.nom_cor_modalidad%TYPE;
+            --
+            -- ! Se cambia por la descripcion de la modalidad
+            l_nom_modalidad       g2990004.nom_modalidad%TYPE;
             l_imp_prima_neta      a2990700.imp_recibo%TYPE;
             l_val_cambio          a2990700.val_cambio%TYPE;
             l_total_recibos_ct    NUMBER := 0;
@@ -250,10 +278,15 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
             l_marca_vehiculo      VARCHAR2(100);
             l_modelo_vehiculo     VARCHAR2(100);
             l_anio_vehiculo       a2000020.val_campo%TYPE;
-            l_color               a2000020.txt_campo%TYPE;
+            l_cod_color           a2000020.cod_campo%TYPE;
+            l_des_color           a2100800.nom_color%TYPE;
             l_num_placa           a2000020.val_campo%TYPE;
             l_des_motor           a2000020.val_campo%TYPE;
             l_des_chasis          a2000020.val_campo%TYPE;
+            -- ! Se agrega tipo de vehiculo
+            l_cod_tipo           a2000020.cod_campo%TYPE;
+            l_des_tipo           a2100100.nom_tip_vehi%TYPE;
+            --
             l_suma_aseg           VARCHAR2(100);
             --
             PROCEDURE p_trata_fechas(p_fecha IN DATE,
@@ -296,6 +329,29 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
                 --
             END p_trata_fechas;
             --
+            -- datos variables
+            FUNCTION pi_datos_variables(    p_reg          c_trae_polizas%ROWTYPE,
+                                            p_cod_campo    a2000020.cod_campo%TYPE
+                                       ) RETURN VARCHAR2 IS 
+            BEGIN 
+                --
+                em_k_a2000020.p_lee_vigente(    g_cod_cia,
+                                                p_reg.num_poliza,
+                                                trn.cero,
+                                                trn.uno,
+                                                trn.uno,
+                                                p_cod_campo,
+                                                p_reg.cod_ramo
+                                           );
+                --                           
+                RETURN em_k_a2000020.f_val_campo;
+                --
+                EXCEPTION
+                    WHEN OTHERS THEN
+                        RETURN NULL;
+                --        
+            END pi_datos_variables; 
+            --
         BEGIN
             --
             l_txt_linea        := '';
@@ -326,15 +382,17 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
                 --
                 -- Modalidad
                 BEGIN
-                    em_k_a2000020.p_lee(g_cod_cia,
-                                        reg.num_poliza,
-                                        0, --reg.num_spto,
-                                        reg.num_apli,
-                                        reg.num_spto_apli,
-                                        1, -- num_riesgo OJO
-                                        1,
-                                        'COD_MODALIDAD',
-                                        reg.cod_ramo);
+                    --
+                    em_k_a2000020.p_lee(    g_cod_cia,
+                                            reg.num_poliza,
+                                            0, --reg.num_spto,
+                                            reg.num_apli,
+                                            reg.num_spto_apli,
+                                            1, -- num_riesgo OJO
+                                            1,
+                                            'COD_MODALIDAD',
+                                            reg.cod_ramo
+                                       );
                     --
                     l_cod_modalidad := em_k_a2000020.f_val_campo;
                     --
@@ -350,7 +408,8 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
                                                 l_cod_modalidad,
                                                 reg.fec_vcto_poliza
                                            );
-                        l_nom_modalidad := em_k_g2990004.f_nom_cor_modalidad;
+                        -- ! Se modifica por la descripcion de la modalidad                   
+                        l_nom_modalidad := em_k_g2990004.f_nom_modalidad;
                         --
                     EXCEPTION
                         WHEN OTHERS THEN
@@ -371,8 +430,8 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
                 END IF;
                 --
                 -- numero de poliza y modalidad
+                -- ! Se quita el prefijo de modalidad en la columna numero de poliza (l_nom_modalidad || '-' ||)
                 dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
-                                                            l_nom_modalidad || '-' ||
                                                             to_number(reg.num_poliza),
                                                             dc_k_xml_format_xls_mca.g_integer
                                                        );
@@ -401,12 +460,41 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
                             --
                 END;
                 --
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_nom_asegurado);
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_ape_asegurado);
-                dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
-                                                            reg.tip_docum || '-' ||
-                                                            reg.cod_docum
-                                                       );
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, l_nom_asegurado );
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, l_ape_asegurado );
+                --
+                -- ! Se agrega columna Tipo de Documento 
+                -- ! Se elimina el prefijo "TIPO DOCUMENTO" para dif. RUC, reg.tip_docum || '-' || reg.cod_documX
+                IF reg.tip_docum = 'RUC' THEN
+                    dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
+                                                                ''
+                                                           );
+                    dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
+                                                                ''
+                                                           );   
+                    -- ! Se agrega la columna RUC
+                    dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
+                                                                reg.cod_docum
+                                                           );  
+                    -- ! Se debe colocar una columna con el tipo de persona
+                    dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
+                                                                'JURIDICO'
+                                                           );
+                ELSE                                           
+                    dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
+                                                                reg.tip_docum
+                                                        );
+                    dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
+                                                                reg.cod_docum
+                                                        );
+                    dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
+                                                                ''
+                                                           ); 
+                    -- ! Se debe colocar una columna con el tipo de persona
+                    dc_k_xml_format_xls_mca.p_escribe_datos(    g_id_fichero,
+                                                                'NATURAL'
+                                                           );                                                                                                               
+                END IF;                                         
                 --
                 BEGIN
                     --
@@ -425,188 +513,140 @@ create or replace PACKAGE BODY em_k_lis_emi_poliza_web_mni IS
                             --
                 END;
                 --
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        l_nom_domicilio1);
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_telefono);
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_celular);
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        to_char(reg.fec_emision_spto,
-                                                                'dd/mm/yyyy'));
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        to_char(reg.fec_efec_spto,
-                                                                'dd/mm/yyyy'));
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        to_char(reg.fec_vcto_spto,
-                                                                'dd/mm/yyyy'));
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, l_nom_domicilio1 );
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, l_telefono );
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, l_celular );
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, to_char(reg.fec_emision_spto, 'dd/mm/yyyy') );
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, to_char(reg.fec_efec_spto, 'dd/mm/yyyy') );
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, to_char(reg.fec_vcto_spto, 'dd/mm/yyyy') );
                 --
-                dc_k_a1001800.p_lee(g_cod_cia, reg.cod_ramo);
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        dc_k_a1001800.f_nom_ramo);
+                -- ! Se sustituye el valor del ramo a modalidad, (dc_k_a1001800.f_nom_ramo)
+                -- dc_k_a1001800.p_lee( g_cod_cia, reg.cod_ramo) ;
                 --
-            
+                dc_k_xml_format_xls_mca.p_escribe_datos( g_id_fichero, l_nom_modalidad );
+                --
                 -- Marca Vehiculo
                 BEGIN
-                BEGIN
-                    em_k_a2000020.p_lee_vigente(g_cod_cia,
-                                                reg.num_poliza,
-                                                trn.cero,
-                                                trn.uno,
-                                                trn.uno,
-                                                'COD_MARCA',
-                                                reg.cod_ramo);
-                    l_cod_marca := em_k_a2000020.f_val_campo;
                     --
-                EXCEPTION
-                    WHEN OTHERS THEN
-                    l_cod_marca := NULL;
+                    -- * Se optimiza el codigo
+                    l_cod_marca := pi_datos_variables( p_reg => reg, p_cod_campo => 'COD_MARCA' );
+                    --
+                    IF l_cod_marca IS NOT NULL THEN
+                        em_k_a2100400.p_lee( g_cod_cia, l_cod_marca, TRUNC(SYSDATE) );
+                        l_marca_vehiculo := em_k_a2100400.f_nom_marca;
+                    END IF;
+                    --
+                    EXCEPTION
+                        WHEN OTHERS THEN
+                            l_marca_vehiculo := ' ';
+                    --        
                 END;
                 --
-                IF l_cod_marca IS NOT NULL THEN
-                    em_k_a2100400.p_lee(g_cod_cia, l_cod_marca, TRUNC(SYSDATE));
-                    l_marca_vehiculo := em_k_a2100400.f_nom_marca;
-                END IF;
-                --
-                EXCEPTION
-                WHEN OTHERS THEN
-                    l_marca_vehiculo := ' ';
-                END;
-                --
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        l_marca_vehiculo);
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_marca_vehiculo);
                 --
                 -- Modelo Vehiculo
                 BEGIN
-                BEGIN
-                    em_k_a2000020.p_lee_vigente(g_cod_cia,
-                                                reg.num_poliza,
-                                                trn.cero,
-                                                trn.uno,
-                                                trn.uno,
-                                                'COD_MODELO',
-                                                reg.cod_ramo);
-                    l_cod_modelo := em_k_a2000020.f_val_campo;
                     --
-                EXCEPTION
-                    WHEN OTHERS THEN
-                    l_cod_modelo := NULL;
+                    -- * Se optimiza el codigo
+                    l_cod_modelo := pi_datos_variables( p_reg => reg, p_cod_campo => 'COD_MODELO' );
+                    --
+                    IF l_cod_modelo IS NOT NULL THEN
+                        --
+                        SELECT a.nom_modelo
+                          INTO l_modelo_vehiculo
+                          FROM a2100410 a
+                         WHERE a.cod_cia     = g_cod_cia
+                           AND a.cod_marca   = l_cod_marca
+                           AND a.cod_modelo  = l_cod_modelo
+                           AND a.fec_validez = ( SELECT MAX(b.fec_validez)
+                                                   FROM a2100410 b
+                                                  WHERE b.cod_cia = g_cod_cia
+                                                    AND b.cod_marca = a.cod_marca
+                                                    AND b.cod_modelo = a.cod_modelo
+                                               );
+                        --
+                    END IF;
+                    --
+                    EXCEPTION
+                        WHEN OTHERS THEN
+                            l_modelo_vehiculo := ' ';
+                    --        
                 END;
                 --
-                IF l_cod_modelo IS NOT NULL THEN
-                    --
-                    SELECT a.nom_modelo
-                    INTO l_modelo_vehiculo
-                    FROM a2100410 a
-                    WHERE a.cod_cia = g_cod_cia
-                    AND a.cod_marca = l_cod_marca
-                    AND a.cod_modelo = l_cod_modelo
-                    AND a.fec_validez =
-                        (SELECT MAX(b.fec_validez)
-                            FROM a2100410 b
-                            WHERE b.cod_cia = g_cod_cia
-                            AND b.cod_marca = a.cod_marca
-                            AND b.cod_modelo = a.cod_modelo);
-                    --
-                END IF;
-                --
-                EXCEPTION
-                WHEN OTHERS THEN
-                    l_modelo_vehiculo := ' ';
-                END;
-                --
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        l_modelo_vehiculo);
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_modelo_vehiculo);
                 --
                 -- Anio Vehiculo
-                BEGIN
-                em_k_a2000020.p_lee_vigente(g_cod_cia,
-                                            reg.num_poliza,
-                                            trn.cero,
-                                            trn.uno,
-                                            trn.uno,
-                                            'COD_ANO',
-                                            reg.cod_ramo);
-                l_anio_vehiculo := em_k_a2000020.f_val_campo;
-                --
-                EXCEPTION
-                WHEN OTHERS THEN
-                    l_anio_vehiculo := ' ';
-                END;
+                -- * Se optimiza el codigo
+                l_anio_vehiculo := pi_datos_variables( p_reg => reg, p_cod_campo => 'COD_ANO' );
                 --  
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        l_anio_vehiculo);
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_anio_vehiculo);
                 --
                 -- COLOR
                 BEGIN
-                em_k_a2000020.p_lee_vigente(g_cod_cia,
-                                            reg.num_poliza,
-                                            trn.cero,
-                                            trn.uno,
-                                            trn.uno,
-                                            'COD_COLOR',
-                                            reg.cod_ramo);
-                l_color := em_k_a2000020.f_txt_campo;
-                --
-                EXCEPTION
-                WHEN OTHERS THEN
-                    l_color := ' ';
+                    --
+                    -- * Se optimiza el codigo
+                    l_cod_color := pi_datos_variables( p_reg => reg, p_cod_campo => 'COD_COLOR' );
+                    --
+                    IF l_cod_color IS NOT NULL THEN
+                        --
+                        SELECT a.nom_color
+                          INTO l_des_color
+                          FROM a2100800 a
+                         WHERE a.cod_color = l_cod_color;
+                        --
+                    END IF;
+                    --
+                    EXCEPTION
+                        WHEN OTHERS THEN
+                            l_des_color := ' ';
+                    --        
                 END;
                 --  
-                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero,
-                                                        l_color);
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_des_color );
                 --
                 -- Placa
-                BEGIN
-                em_k_a2000020.p_lee_vigente(g_cod_cia,
-                                            reg.num_poliza,
-                                            trn.cero,
-                                            trn.uno,
-                                            trn.uno,
-                                            'NUM_PLACA',
-                                            reg.cod_ramo);
-                l_num_placa := em_k_a2000020.f_val_campo;
-                --
-                EXCEPTION
-                WHEN OTHERS THEN
-                    l_num_placa := NULL;
-                END;
+                l_num_placa := pi_datos_variables( p_reg => reg, p_cod_campo => 'NUM_PLACA' );
                 --
                 dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_num_placa);
-                -- Motor
-                BEGIN
-                em_k_a2000020.p_lee_vigente(g_cod_cia,
-                                            reg.num_poliza,
-                                            trn.cero,
-                                            trn.uno,
-                                            trn.uno,
-                                            'DES_MOTOR',
-                                            reg.cod_ramo);
-                l_des_motor := em_k_a2000020.f_val_campo;
                 --
-                EXCEPTION
-                WHEN OTHERS THEN
-                    l_des_motor := NULL;
-                END;
+                -- Motor
+                l_des_motor := pi_datos_variables( p_reg => reg, p_cod_campo => 'DES_MOTOR' );
                 --
                 dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_des_motor);
                 --
                 -- Chasis
-                BEGIN
-                em_k_a2000020.p_lee_vigente(g_cod_cia,
-                                            reg.num_poliza,
-                                            trn.cero,
-                                            trn.uno,
-                                            trn.uno,
-                                            'DES_CHASIS',
-                                            reg.cod_ramo);
-                l_des_chasis := em_k_a2000020.f_val_campo;
-                --
-                EXCEPTION
-                WHEN OTHERS THEN
-                    l_des_chasis := NULL;
-                END;
+                l_des_chasis := pi_datos_variables( p_reg => reg, p_cod_campo => 'DES_CHASIS' );
                 --
                 dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_des_chasis);
                 --
+                -- Tipo vehiculo
+                BEGIN
+                    --
+                    -- * Se optimiza el codigo
+                    l_cod_tipo := pi_datos_variables( p_reg => reg, p_cod_campo => 'COD_TIPO' );
+                    --
+                    IF l_cod_tipo IS NOT NULL THEN
+                        --
+                        SELECT a.nom_tip_vehi
+                          INTO l_des_tipo
+                          FROM a2100100 a
+                         WHERE a.cod_cia      = g_cod_cia
+                           AND a.cod_tip_vehi = l_cod_tipo
+                           AND fec_validez = ( SELECT max( b.fec_validez )
+                                                 FROM a2100100 b
+                                                WHERE b.cod_cia         = g_cod_cia 
+                                                  AND b.cod_tip_vehi    = l_cod_tipo
+                                             );
+                        --
+                    END IF;
+                    --
+                    EXCEPTION
+                        WHEN OTHERS THEN
+                            l_des_tipo := ' ';
+                    --        
+                END;
+                --
+                dc_k_xml_format_xls_mca.p_escribe_datos(g_id_fichero, l_des_tipo);
                 --
                 -- Suma Asegurada Spto
                 BEGIN

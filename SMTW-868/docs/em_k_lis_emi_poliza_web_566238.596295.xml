@@ -8,7 +8,7 @@
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <Author>niadmin</Author>
   <LastAuthor>niadmin</LastAuthor>
-  <Created>2022-02-25T12:36:29Z</Created>
+  <Created>2022-02-25T15:51:39Z</Created>
  </DocumentProperties>
  <Styles>
   <Style ss:ID="Default" ss:Name="Normal" >
@@ -121,21 +121,28 @@
    <Column  ss:AutoFitWidth="1"  ss:Width="150"  />
    <Column  ss:AutoFitWidth="1"  ss:Width="150"  />
    <Column  ss:AutoFitWidth="1"  ss:Width="150"  />
+   <Column  ss:AutoFitWidth="1"  ss:Width="150"  />
+   <Column  ss:AutoFitWidth="1"  ss:Width="150"  />
+   <Column  ss:AutoFitWidth="1"  ss:Width="150"  />
+   <Column  ss:AutoFitWidth="1"  ss:Width="150"  />
    <Row>
-    <Cell ss:MergeAcross="22" ss:StyleID="sh1"><Data ss:Type="String">MAPFRE | Nicaragua. Reporte de Polizas Emitidas en PORTAL WEB Desde: 112021 Hasta: 30112021 AGENTE: 566238</Data></Cell>
+    <Cell ss:MergeAcross="26" ss:StyleID="sh1"><Data ss:Type="String">MAPFRE | Nicaragua. Reporte de Polizas Emitidas en PORTAL WEB Desde: 112021 Hasta: 30112021 AGENTE: 566238</Data></Cell>
    </Row>
    <Row>
     <Cell ss:StyleID="sh1"><Data ss:Type="String">NUMEROPOLIZA</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">NOMBRES</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">APELLIDOS</Data></Cell>
+    <Cell ss:StyleID="sh2"><Data ss:Type="String">TIP. DOC.</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">CEDULA</Data></Cell>
+    <Cell ss:StyleID="sh2"><Data ss:Type="String">RUC</Data></Cell>
+    <Cell ss:StyleID="sh2"><Data ss:Type="String">TIP. PERSONA</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">DIRECCION</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">TEL1</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">CELULAR</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">FEMISION</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">FDESDE</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">FHASTA</Data></Cell>
-    <Cell ss:StyleID="sh2"><Data ss:Type="String">RAMO</Data></Cell>
+    <Cell ss:StyleID="sh2"><Data ss:Type="String">MODALIDAD</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">MARCA</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">MODELO</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">AÃ`O</Data></Cell>
@@ -143,6 +150,7 @@
     <Cell ss:StyleID="sh2"><Data ss:Type="String">PLACA</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">MOTOR</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">CHASIS</Data></Cell>
+    <Cell ss:StyleID="sh2"><Data ss:Type="String">TIP. VEHICULO</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">SUMAASEGURADA</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">PNETA</Data></Cell>
     <Cell ss:StyleID="sh2"><Data ss:Type="String">PTOTAL</Data></Cell>
@@ -150,17 +158,20 @@
     <Cell ss:StyleID="sh2"><Data ss:Type="String">IDEJECUTIVO</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="1">
-    <Cell ss:StyleID="s23" ><Data ss:Type="String">SORCV-3011002168674</Data></Cell>
+    <Cell ss:StyleID="s23" ><Data ss:Type="Number">3011002168674.</Data></Cell>
     <Cell ><Data ss:Type="String">ASEGURADO NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">MAPFRE NICARAGUA</Data></Cell>
-    <Cell ><Data ss:Type="String">CIN-0811703991000P</Data></Cell>
+    <Cell ><Data ss:Type="String">CIN</Data></Cell>
+    <Cell ><Data ss:Type="String">0811703991000P</Data></Cell>
+    <Cell ><Data ss:Type="String"></Data></Cell>
+    <Cell ><Data ss:Type="String">NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">BO. MARIA EMILIA GONZALES, DESMOTADORA L A VIRGEN 1C, NORTE 2C, OESTE. </Data></Cell>
     <Cell ><Data ss:Type="String"></Data></Cell>
     <Cell ><Data ss:Type="String">78678803</Data></Cell>
     <Cell ><Data ss:Type="String">30/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">24/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">24/11/2022</Data></Cell>
-    <Cell ><Data ss:Type="String">AUTOMÓVIL</Data></Cell>
+    <Cell ><Data ss:Type="String">SORCV_$</Data></Cell>
     <Cell ><Data ss:Type="String">GENESIS</Data></Cell>
     <Cell ><Data ss:Type="String">CR1S 200</Data></Cell>
     <Cell ><Data ss:Type="String">2022</Data></Cell>
@@ -175,17 +186,20 @@
     <Cell ><Data ss:Type="String"> </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="1">
-    <Cell ss:StyleID="s23" ><Data ss:Type="String">SORCV-3011002168686</Data></Cell>
+    <Cell ss:StyleID="s23" ><Data ss:Type="Number">3011002168686.</Data></Cell>
     <Cell ><Data ss:Type="String">ASEGURADO NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">MAPFRE NICARAGUA</Data></Cell>
-    <Cell ><Data ss:Type="String">CIN-0812311920003J</Data></Cell>
+    <Cell ><Data ss:Type="String">CIN</Data></Cell>
+    <Cell ><Data ss:Type="String">0812311920003J</Data></Cell>
+    <Cell ><Data ss:Type="String"></Data></Cell>
+    <Cell ><Data ss:Type="String">NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">BO. GUADALUPE, FERROMAX GUADALUPE 1/2C. AL SUR. CHINANDEGA </Data></Cell>
     <Cell ><Data ss:Type="String"></Data></Cell>
     <Cell ><Data ss:Type="String">99999999</Data></Cell>
     <Cell ><Data ss:Type="String">30/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">24/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">24/11/2022</Data></Cell>
-    <Cell ><Data ss:Type="String">AUTOMÓVIL</Data></Cell>
+    <Cell ><Data ss:Type="String">SORCV_$</Data></Cell>
     <Cell ><Data ss:Type="String">GENESIS</Data></Cell>
     <Cell ><Data ss:Type="String">GE1252A</Data></Cell>
     <Cell ><Data ss:Type="String">2021</Data></Cell>
@@ -200,17 +214,20 @@
     <Cell ><Data ss:Type="String"> </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="1">
-    <Cell ss:StyleID="s23" ><Data ss:Type="String">SORCV-3011002169445</Data></Cell>
+    <Cell ss:StyleID="s23" ><Data ss:Type="Number">3011002169445.</Data></Cell>
     <Cell ><Data ss:Type="String">ASEGURADO NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">MAPFRE NICARAGUA</Data></Cell>
-    <Cell ><Data ss:Type="String">CIN-2810604930002X</Data></Cell>
+    <Cell ><Data ss:Type="String">CIN</Data></Cell>
+    <Cell ><Data ss:Type="String">2810604930002X</Data></Cell>
+    <Cell ><Data ss:Type="String"></Data></Cell>
+    <Cell ><Data ss:Type="String">NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">BO. MERCEDES, GASOLINERA UNO 2 1/2C. AL OESTE. CHICHIGALPA, CHINANDEGA883 </Data></Cell>
     <Cell ><Data ss:Type="String"></Data></Cell>
     <Cell ><Data ss:Type="String">88385441</Data></Cell>
     <Cell ><Data ss:Type="String">30/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">25/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">25/11/2022</Data></Cell>
-    <Cell ><Data ss:Type="String">AUTOMÓVIL</Data></Cell>
+    <Cell ><Data ss:Type="String">SORCV_$</Data></Cell>
     <Cell ><Data ss:Type="String">GENESIS</Data></Cell>
     <Cell ><Data ss:Type="String">HJ110-2</Data></Cell>
     <Cell ><Data ss:Type="String">2022</Data></Cell>
@@ -225,17 +242,20 @@
     <Cell ><Data ss:Type="String"> </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="1">
-    <Cell ss:StyleID="s23" ><Data ss:Type="String">SORCV-3011002170365</Data></Cell>
+    <Cell ss:StyleID="s23" ><Data ss:Type="Number">3011002170365.</Data></Cell>
     <Cell ><Data ss:Type="String">ASEGURADO NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">MAPFRE NICARAGUA</Data></Cell>
-    <Cell ><Data ss:Type="String">CIN-0810811021011L</Data></Cell>
+    <Cell ><Data ss:Type="String">CIN</Data></Cell>
+    <Cell ><Data ss:Type="String">0810811021011L</Data></Cell>
+    <Cell ><Data ss:Type="String"></Data></Cell>
+    <Cell ><Data ss:Type="String">NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">CMCA. RANCHERIA, CANCHA RANCHERIA 2 1/2C O. </Data></Cell>
     <Cell ><Data ss:Type="String"></Data></Cell>
     <Cell ><Data ss:Type="String">99999999</Data></Cell>
     <Cell ><Data ss:Type="String">30/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">26/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">26/11/2022</Data></Cell>
-    <Cell ><Data ss:Type="String">AUTOMÓVIL</Data></Cell>
+    <Cell ><Data ss:Type="String">SORCV_$</Data></Cell>
     <Cell ><Data ss:Type="String">YAMAHA</Data></Cell>
     <Cell ><Data ss:Type="String">CRYPTOM</Data></Cell>
     <Cell ><Data ss:Type="String">2022</Data></Cell>
@@ -250,17 +270,20 @@
     <Cell ><Data ss:Type="String"> </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="1">
-    <Cell ss:StyleID="s23" ><Data ss:Type="String">SORCV-3011002170586</Data></Cell>
+    <Cell ss:StyleID="s23" ><Data ss:Type="Number">3011002170586.</Data></Cell>
     <Cell ><Data ss:Type="String">ASEGURADO NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">MAPFRE NICARAGUA</Data></Cell>
-    <Cell ><Data ss:Type="String">CIN-0811108011008A</Data></Cell>
+    <Cell ><Data ss:Type="String">CIN</Data></Cell>
+    <Cell ><Data ss:Type="String">0811108011008A</Data></Cell>
+    <Cell ><Data ss:Type="String"></Data></Cell>
+    <Cell ><Data ss:Type="String">NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">RPTO. CARLOS FONSECA, CENTRO DE SALUD 1 1/2C. AL OESTE. CHINANDEGA </Data></Cell>
     <Cell ><Data ss:Type="String"></Data></Cell>
     <Cell ><Data ss:Type="String">98889988</Data></Cell>
     <Cell ><Data ss:Type="String">30/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">29/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">29/11/2022</Data></Cell>
-    <Cell ><Data ss:Type="String">AUTOMÓVIL</Data></Cell>
+    <Cell ><Data ss:Type="String">SORCV_$</Data></Cell>
     <Cell ><Data ss:Type="String">GENESIS</Data></Cell>
     <Cell ><Data ss:Type="String">HJ110-2</Data></Cell>
     <Cell ><Data ss:Type="String">2022</Data></Cell>
@@ -275,17 +298,20 @@
     <Cell ><Data ss:Type="String"> </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="1">
-    <Cell ss:StyleID="s23" ><Data ss:Type="String">SORCV-3011002170652</Data></Cell>
+    <Cell ss:StyleID="s23" ><Data ss:Type="Number">3011002170652.</Data></Cell>
     <Cell ><Data ss:Type="String">ASEGURADO NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">MAPFRE NICARAGUA</Data></Cell>
-    <Cell ><Data ss:Type="String">CIN-0892701870000Q</Data></Cell>
+    <Cell ><Data ss:Type="String">CIN</Data></Cell>
+    <Cell ><Data ss:Type="String">0892701870000Q</Data></Cell>
+    <Cell ><Data ss:Type="String"></Data></Cell>
+    <Cell ><Data ss:Type="String">NATURAL</Data></Cell>
     <Cell ><Data ss:Type="String">CMCA. LAS CONCHAS, ESCUELA 2KM. OESTE. V ILLANUEVA, CHINANDEGA </Data></Cell>
     <Cell ><Data ss:Type="String"></Data></Cell>
     <Cell ><Data ss:Type="String">84880103</Data></Cell>
     <Cell ><Data ss:Type="String">30/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">30/11/2021</Data></Cell>
     <Cell ><Data ss:Type="String">30/11/2022</Data></Cell>
-    <Cell ><Data ss:Type="String">AUTOMÓVIL</Data></Cell>
+    <Cell ><Data ss:Type="String">SORCV_$</Data></Cell>
     <Cell ><Data ss:Type="String">GENESIS</Data></Cell>
     <Cell ><Data ss:Type="String">SX1 200</Data></Cell>
     <Cell ><Data ss:Type="String">2022</Data></Cell>
@@ -324,7 +350,7 @@
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
-  <AutoFilter x:Range="R2C1:R2C23" xmlns="urn:schemas-microsoft-com:office:excel">
+  <AutoFilter x:Range="R2C1:R2C27" xmlns="urn:schemas-microsoft-com:office:excel">
   </AutoFilter>
     <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
    <Range>R4C4</Range>
