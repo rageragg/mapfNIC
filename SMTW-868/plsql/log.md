@@ -1,7 +1,7 @@
 # Registro de Actividades Resaltantes
 ### Fecha       Descripcion
 *   25/02/2022  Inicio de solucion
-*               Quitar la columna Compañía
+*   25/02/2022  Quitar la columna Compañía
 *               En la columna nombre separar los apellidos en primer apellido y segundo apellido
 *               En la columna cedula quitar la abreviatura CIN del principio. Que en la columna Cedula aparezca el número de identificación 
                 de todos los tipos de identificación menos RUC.
