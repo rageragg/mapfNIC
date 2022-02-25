@@ -4,7 +4,7 @@ const https = require('https')
 function listaColores() {  
 
     const data = JSON.stringify({
-    access_token: '-904366647OQRMRUUI'
+    access_token: '-663480928CUXYMXMZ'
     })
 
     const options = {
@@ -39,7 +39,7 @@ function listaColores() {
 function listaUsos() {  
 
     const data = JSON.stringify({
-    access_token: '-904366647OQRMRUUI'
+    access_token: '-663480928CUXYMXMZ'
     })
 
     const options = {
@@ -74,7 +74,7 @@ function listaUsos() {
 function listaLineas() {  
 
     const data = JSON.stringify({
-        ccess_token: '-904366647OQRMRUUI',
+        access_token: '-663480928CUXYMXMZ',
         codigo: '100'
     })
 
@@ -110,7 +110,7 @@ function listaLineas() {
 function listaMarcas() {  
 
     const data = JSON.stringify({
-        ccess_token: '-904366647OQRMRUUI'
+        access_token: '-663480928CUXYMXMZ'
     })
 
     const options = {
@@ -145,7 +145,7 @@ function listaMarcas() {
 function listaMunicipios() {  
 
     const data = JSON.stringify({
-        ccess_token: '-904366647OQRMRUUI',
+        access_token: '-663480928CUXYMXMZ',
         codigo: 15
     })
 
@@ -181,7 +181,7 @@ function listaMunicipios() {
 function listaDepartamentos() {  
 
     const data = JSON.stringify({
-        ccess_token: '-904366647OQRMRUUI',
+        access_token: '-663480928CUXYMXMZ',
         codigo: 15
     })
 
@@ -217,7 +217,7 @@ function listaDepartamentos() {
 function listaPiezas() {  
 
     const data = JSON.stringify({
-        ccess_token: '-904366647OQRMRUUI',
+        access_token: '-663480928CUXYMXMZ',
         codigo: 15
     })
 

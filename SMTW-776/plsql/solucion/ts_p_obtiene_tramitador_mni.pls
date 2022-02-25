@@ -54,7 +54,8 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
     l_hay_error EXCEPTION;
     l_contador NUMBER(5) := 0;
     --
-    l_num_sini a7000900.num_sini%TYPE;
+    l_num_sini      a7000900.num_sini%TYPE;
+    l_cod_nivel3    a1001339.cod_nivel3 %TYPE := p_cod_nivel3;
     --
     l_mca_asigna_esp VARCHAR2(1) := 'N';
     --
@@ -104,7 +105,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
           FROM a1001339 a
          WHERE a.cod_cia = p_cod_cia
            AND a.tip_estado = 'A'
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND NVL(a.num_siniestros, 0) < NVL(a.max_num_exp, 99999)
            AND a.cod_tramitador IN
                 (SELECT b.cod_tramitador
@@ -119,7 +120,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
         SELECT count(*)
           FROM a1001339 a
          WHERE a.cod_cia = p_cod_cia
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND a.tip_estado = 'A'
            AND NVL(a.num_siniestros, 0) < NVL(a.max_num_exp, 99999)
            AND a.cod_tramitador IN
@@ -141,7 +142,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                     AND b.cod_tramitador = a.cod_tramitador
                     AND b.cod_ramo = p_cod_ramo
                 )
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND a.tip_estado = 'A'
            AND NVL(a.num_siniestros, 0) < NVL(a.max_num_exp, 99999);
     --
@@ -156,7 +157,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                     AND b.cod_tramitador = a.cod_tramitador
                     AND b.cod_sector = p_cod_sector
                 )
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND a.tip_estado = 'A'
            AND NVL(a.num_siniestros, 0) < NVL(a.max_num_exp, 99999);
     --     
@@ -164,7 +165,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
         SELECT a.tip_docum, a.cod_docum, a.cod_tramitador
           FROM a1001339 a
          WHERE a.cod_cia = p_cod_cia
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND a.cod_tramitador NOT IN
                 (SELECT b.cod_tramitador
                     FROM a7001024_MNI b
@@ -175,7 +176,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                 (SELECT min(NVL(c.num_siniestros, 0))
                     FROM a1001339 c
                     WHERE c.cod_cia = p_cod_cia
-                    AND c.cod_nivel3 = p_cod_nivel3
+                    AND c.cod_nivel3 = l_cod_nivel3
                     AND c.cod_tramitador NOT IN
                         (SELECT d.cod_tramitador
                             FROM a7001024_MNI d
@@ -199,7 +200,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                     AND b.cod_tramitador = a.cod_tramitador
                     AND b.tip_exp = p_tip_exp_aper
                 )
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND NVL(a.num_siniestros, 0) =
                 (SELECT min(NVL(c.num_siniestros, 0))
                     FROM a1001339 c
@@ -210,7 +211,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                             WHERE d.cod_cia = c.cod_cia
                             AND d.cod_tramitador = c.cod_tramitador
                             AND d.tip_exp = p_tip_exp_aper)
-                    AND c.cod_nivel3 = p_cod_nivel3
+                    AND c.cod_nivel3 = l_cod_nivel3
                     AND c.tip_estado = 'A'
                     AND NVL(c.num_siniestros, 0) < NVL(c.max_num_exp, 99999)
                 )
@@ -228,7 +229,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                     AND b.cod_tramitador = a.cod_tramitador
                     AND b.num_poliza = p_num_poliza
                 )
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND NVL(a.num_siniestros, 0) =
                 (SELECT min(NVL(c.num_siniestros, 0))
                     FROM a1001339 c
@@ -239,7 +240,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                             WHERE d.cod_cia = c.cod_cia
                             AND d.cod_tramitador = c.cod_tramitador
                             AND d.num_poliza = p_num_poliza)
-                    AND c.cod_nivel3 = p_cod_nivel3
+                    AND c.cod_nivel3 = l_cod_nivel3
                     AND c.tip_estado = 'A'
                     AND NVL(c.num_siniestros, 0) < NVL(c.max_num_exp, 99999)
                 )
@@ -257,7 +258,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                     AND b.cod_tramitador = a.cod_tramitador
                     AND b.cod_ramo = p_cod_ramo
                 )
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND NVL(a.num_siniestros, 0) =
                 (SELECT min(NVL(c.num_siniestros, 0))
                     FROM a1001339 c
@@ -268,7 +269,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                             WHERE d.cod_cia = c.cod_cia
                             AND d.cod_tramitador = c.cod_tramitador
                             AND d.cod_ramo = p_cod_ramo)
-                    AND c.cod_nivel3 = p_cod_nivel3
+                    AND c.cod_nivel3 = l_cod_nivel3
                     AND c.tip_estado = 'A'
                     AND NVL(c.num_siniestros, 0) < NVL(c.max_num_exp, 99999)
                 )
@@ -286,7 +287,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                     AND b.cod_tramitador = a.cod_tramitador
                     AND b.cod_sector = p_cod_sector
                 )
-           AND a.cod_nivel3 = p_cod_nivel3
+           AND a.cod_nivel3 = l_cod_nivel3
            AND NVL(a.num_siniestros, 0) =
                 (SELECT min(NVL(c.num_siniestros, 0))
                     FROM a1001339 c
@@ -297,7 +298,7 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                             WHERE d.cod_cia = c.cod_cia
                             AND d.cod_tramitador = c.cod_tramitador
                             AND d.cod_sector = p_cod_sector)
-                    AND c.cod_nivel3 = p_cod_nivel3
+                    AND c.cod_nivel3 = l_cod_nivel3
                     AND c.tip_estado = 'A'
                     AND NVL(c.num_siniestros, 0) < NVL(c.max_num_exp, 99999)
                 )
@@ -466,10 +467,10 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
                 --
                 IF v_sentencias.COD_NIVEL_TRAMITADOR <> 0 THEN
                     IF l_stm_act IS NOT NULL THEN
-                        IF p_cod_nivel3 IS NULL THEN
+                        IF l_cod_nivel3 IS NULL THEN
                             v_campos_evaluar(8) := 'COD_NIVEL_TRAMITADOR <> COD_NIVEL_TRAMITADOR';
                         ELSE
-                            v_campos_evaluar(8) := 'COD_NIVEL_TRAMITADOR '||fp_formato_stm(p_cod_nivel3, 'N');
+                            v_campos_evaluar(8) := 'COD_NIVEL_TRAMITADOR '||fp_formato_stm(l_cod_nivel3, 'N');
                         END IF;
                         l_stm_act := l_stm_act||' AND '|| v_campos_evaluar(8);
                     END IF;  
@@ -542,8 +543,9 @@ CREATE OR REPLACE PROCEDURE ts_p_obtiene_tramitador_mni(p_cod_cia             a1
         --
         ts_k_a1001339.p_lee_cod_tramitador(p_cod_cia, p_cod_tramitador_aper);
         --
-        p_tip_docum := ts_k_a1001339.f_tip_docum;
-        p_cod_docum := ts_k_a1001339.f_cod_docum;
+        p_tip_docum     := ts_k_a1001339.f_tip_docum;
+        p_cod_docum     := ts_k_a1001339.f_cod_docum;
+        l_cod_nivel3    := ts_k_a1001339.f_cod_nivel3;
         --
         EXCEPTION
             WHEN OTHERS THEN
@@ -583,6 +585,7 @@ BEGIN
     --
     IF l_mca_asigna_esp = 'N' THEN
         --
+        l_cod_nivel3 := p_cod_nivel3;
         IF p_cod_tramitador IS NULL THEN
             --
             -- Se mira si para la oficina tramitadora hay algun tramitador que tramite ese tipo de expediente
@@ -690,6 +693,6 @@ BEGIN
     --
     EXCEPTION
         WHEN l_hay_error THEN
-        RAISE_APPLICATION_ERROR(-l_cod_mensaje, l_txt_mensaje);
+            RAISE_APPLICATION_ERROR(-l_cod_mensaje, l_txt_mensaje);
         --
 END ts_p_obtiene_tramitador_mni;

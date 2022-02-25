@@ -1,0 +1,206 @@
+$ node test-001.js
+Lista Colores
+statusCode: 200
+[{"mensaje":"400"}]
+
+Lista Lineas
+statusCode: 200
+[{"descripcion":"LINEA #1","codigo":"1"},{"descripcion":"LINEA #2","codigo":"2"},{"mensaje":"OK"}]
+
+Lista Municipios
+statusCode: 200
+[{"descripcion":"EL VIEJO","codigo":"1"},{"descripcion":"PUERTO MORAZAN","codigo":"2"},{"descripcion":"SOMOTILLO","codigo":"3"},{"descripcion":"SANTO TOMAS DEL NORTE","codigo":"4"},{"descripci
+on":"CINCO PINOS","codigo":"5"},{"descripcion":"SAN PEDRO DEL NORTE","codigo":"6"},{"descripcion":"SAN FRANCISCO DEL NORTE","codigo":"7"},{"descripcion":"VILLANUEVA","codigo":"8"},{"descripcio
+n":"CHINANDEGA","codigo":"9"},{"descripcion":"POSOLTEGA","codigo":"10"},{"descripcion":"CHICHIGALPA","codigo":"11"},{"descripcion":"EL REALEJO","codigo":"12"},{"descripcion":"CORINTO","codigo"
+:"13"},{"mensaje":"OK"}]
+
+lista Departamentos
+statusCode: 200
+[{"descripcion":"CHINANDEGA","codigo":"1"},{"descripcion":"LEON","codigo":"2"},{"descripcion":"ESTELI","codigo":"3"},{"descripcion":"MADRIZ","codigo":"4"},{"descripcion":"NUEVA SEGOVIA","codig
+o":"5"},{"descripcion":"JINOTEGA","codigo":"6"},{"descripcion":"R.A.A.N","codigo":"7"},{"descripcion":"MATAGALPA","codigo":"8"},{"descripcion":"BOACO","codigo":"9"},{"descripcion":"MANAGUA","c
+odigo":"10"},{"descripcion":"MASAYA","codigo":"11"},{"descripcion":"CARAZO","codigo":"12"},{"descripcion":"GRANADA","codigo":"13"},{"descripcion":"RIVAS","codigo":"14"},{"descripcion":"RIO SAN
+ JUAN","codigo":"15"},{"descripcion":"CHONTALES","codigo":"16"},{"descripcion":"R.A.A.S","codigo":"17"},{"descripcion":"EXTRANJERO","codigo":"18"},{"mensaje":"OK"}]
+
+ Lista Usos
+statusCode: 200
+[{"descripcion":"PRIVADO","codigo":"1"},{"descripcion":"COMERCIAL","codigo":"2"},{"descripcion":"TURISMO","codigo":"3"},{"descripcion":"RENTA A CAR","codigo":"4"},{"descripcion":"PARTICULAR","
+codigo":"5"},{"descripcion":"CARGA","codigo":"6"},{"descripcion":"ESCOLAR","codigo":"7"},{"descripcion":"GRUA","codigo":"8"},{"descripcion":"AMBULANCIA","codigo":"9"},{"descripcion":"PUBLICO",
+"codigo":"10"},{"descripcion":"TAXI","codigo":"11"},{"descripcion":"OTRO","codigo":"12"},{"mensaje":"OK"}]
+
+lista Piezas
+statusCode: 200
+[{"descripcion":"CITRUS","codigo":"1700"},{"descripcion":"CJTO BOTON BOCINA","codigo":"1701"},{"descripcion":"CJTO MANEC EMBR","codigo":"1702"},{"descripcion":"CJTO TUBO ACONDICION","codigo":"
+1703"},{"descripcion":"CKARPA","codigo":"1704"},{"descripcion":"CLAVIJA","codigo":"1705"},{"descripcion":"CLAVIJA DE BOM","codigo":"1706"},{"descripcion":"CLAVIJA DE BOMB","codigo":"1707"},{"d
+escripcion":"CLAVIJA DE BUMPER","codigo":"1708"},{"descripcion":"CLAVIJA LAMP. DL","codigo":"1709"},{"descripcion":"CLAVIJA Y CABLE DE LAMP.","codigo":"1710"},{"descripcion":"CLAVIJA Y CABLE L
+AMPARA","codigo":"1711"},{"descripcion":"CLAVIJA Y CABLE P/BUJIAS","codigo":"1712"},{"descripcion":"CLAVIJA Y CABLE STOP","codigo":"1713"},{"descripcion":"CLAVOS","codigo":"1714"},{"descripcio
+n":"CLAXON","codigo":"1715"},{"descripcion":"CLIP","codigo":"1716"},{"descripcion":"CLIP DE BUMPER","codigo":"1717"},{"descripcion":"CLIP DE FENDER","codigo":"1718"},{"descripcion":"CLIP DE FE
+NDER TRASERO","codigo":"1719"},{"descripcion":"CLIP DE FOCO DELANTERO","codigo":"1720"},{"descripcion":"CLIP DE FORRO","codigo":"1721"},{"descripcion":"CLIP DE PERSIANA","codigo":"1722"},{"des
+cripcion":"CLIP DE PUERTA","codigo":"1723"},{"descripcion":"CLIP FENDER","codigo":"1724"},{"descripcion":"CLIP REDONDO","codigo":"1725"},{"descripcion":"CLIPS DE MOLDURA INFERIOR DE FAROL","co
+digo":"1726"},{"descripcion":"CLUTCH","codigo":"1727"},{"descripcion":"CLUTCH DE COMPRESOR DE A/A.","codigo":"1728"},{"descripcion":"CLUTCH DE VENTILADOR","codigo":"1729"},{"descripcion":"COAS
+EGURO COBRADO DE MAS .","codigo":"1730"},{"descripcion":"COBER FRONTAL","codigo":"1731"},{"descripcion":"COBER LATERALES","codigo":"1732"},{"descripcion":"COBERTOR COMPLETO DE TANQUE","codigo"
+:"1733"},{"descripcion":"COBERTOR DE ASPIROMETRO","codigo":"1734"},{"descripcion":"COBERTOR DE CUNAS DE POSTE DE DIRECC.","codigo":"1735"},{"descripcion":"COBERTOR DE ESCAPE","codigo":"1736"},
+{"descripcion":"COBERTOR DE FOCO","codigo":"1737"},{"descripcion":"COBERTOR DE MOFLE GRANDE","codigo":"1738"},{"descripcion":"COBERTOR DE MOFLE PEQ","codigo":"1739"},{"descripcion":"COBERTOR D
+E MOFLE PINTURA DE MOFLE","codigo":"1740"},{"descripcion":"COBERTOR DE PIDE VIA RH Y LH","codigo":"1741"},{"descripcion":"COBERTOR DE PIDEVIA","codigo":"1742"},{"descripcion":"COBERTOR DE SILL
+ON","codigo":"1743"},{"descripcion":"COBERTOR DE TABLERO","codigo":"1744"},{"descripcion":"COBERTOR DE TACOMETRO","codigo":"1745"},{"descripcion":"COBERTOR DE TANQUE","codigo":"1746"},{"descri
+pcion":"COBERTOR DE TANQUE CENTRAL","codigo":"1747"},{"descripcion":"COBERTOR DE TANQUE LH","codigo":"1748"},{"descripcion":"COBERTOR DE TANQUE RH","codigo":"1749"},{"descripcion":"COBERTOR DE
+L RADIDADOR, SUPERIOR","codigo":"1750"},{"descripcion":"COBERTOR FRONTAL","codigo":"1751"},{"descripcion":"COBERTOR FRONTAL DERECHO","codigo":"1752"},{"descripcion":"COBERTOR FRONTAL IZQ.","co
+digo":"1753"},{"descripcion":"COBERTOR LH","codigo":"1754"},{"descripcion":"COBERTOR PLASTICO DE TANQUE","codigo":"1755"},{"descripcion":"COBERTOR PLASTICO INFERIOR DEL. DE MOTO","codigo":"175
+6"},{"descripcion":"COBERTOR RH","codigo":"1757"},{"descripcion":"COBERTOR RR LH","codigo":"1758"},{"descripcion":"COBERTOR RR RH","codigo":"1759"},{"descripcion":"COBERTOR TRASERO","codigo":"
+1760"},{"descripcion":"COBERTOR TRASERO LH","codigo":"1761"},{"descripcion":"COBERTOR TRASERO RH","codigo":"1762"},{"descripcion":"COBERTOR TRIANGULAR","codigo":"1763"},{"descripcion":"COBERTO
+RERS DE TANQUE","codigo":"1764"},{"descripcion":"COBERTORES LATERALES","codigo":"1765"},{"descripcion":"COBERTURA DE SEGURO OBLIGATORIO","codigo":"1766"},{"descripcion":"COBERTURA DE SEGURO OB
+LIGATORIO 2","codigo":"1767"},{"descripcion":"CODO DE ESCAPE","codigo":"1768"},{"descripcion":"COFRE","codigo":"1769"},{"descripcion":"COJ ASI EN D/L","codigo":"1770"},{"descripcion":"COJIN AM
+ORT. DEL.","codigo":"1771"},{"descripcion":"COJIN ASI EN D/L","codigo":"1772"},{"descripcion":"COJIN ASIENTO","codigo":"1773"},{"descripcion":"COJIN BARRA EST.","codigo":"1774"},{"descripcion"
+:"COJIN DE BUMPER","codigo":"1775"},{"descripcion":"COJIN RODILLOS","codigo":"1776"},{"descripcion":"COJIN TAPA COMB","codigo":"1777"},{"descripcion":"COJINETE DE CIGUEÑAL","codigo":"1778"},{"
+descripcion":"COJINETE DE GOMA","codigo":"1779"},{"descripcion":"COJINETE DEL MONTAJE DEL COMPENSADOR, RH","codigo":"1780"},{"descripcion":"COJINETE FARO","codigo":"1781"},{"descripcion":"COJI
+NETES DE CIGUEÑAL","codigo":"1782"},{"descripcion":"COLA ALUMINIO","codigo":"1783"},{"descripcion":"COLA COMPLETA","codigo":"1784"},{"descripcion":"COLA DE ESCAPE","codigo":"1785"},{"descripci
+on":"COLA DE MILANO, D, TRAS, INF","codigo":"1786"},{"descripcion":"COLA DE MILANO, D, TRAS, SUP.","codigo":"1787"},{"descripcion":"COLA DE PATO","codigo":"1788"},{"descripcion":"Cola Plastica
+ Trasera","codigo":"1789"},{"descripcion":"COLCHON AIRE LH","codigo":"1790"},{"descripcion":"COLECTOR ADMISION","codigo":"1791"},{"descripcion":"COLECTOR DE ACEITE","codigo":"1792"},{"descripc
+ion":"COLETA DE GUARDAFANGO","codigo":"1793"},{"descripcion":"COLETA DE VESPA","codigo":"1794"},{"descripcion":"COLETA INFERIOR","codigo":"1795"},{"descripcion":"COLETA TRASERA","codigo":"1796
+"},{"descripcion":"COLITA RH","codigo":"1797"},{"descripcion":"COLITA TRASERA","codigo":"1798"},{"descripcion":"COLITA TRASERA LH-RH","codigo":"1799"},{"descripcion":"COLITA TRASERA RH","codig
+o":"1800"},{"mensaje":"OK"}]
+
+Lista Marcas
+statusCode: 200
+[{"descripcion":"YUKI","codigo":"700"},{"descripcion":"TMC","codigo":"701"},{"descripcion":"ADAM","codigo":"702"},{"descripcion":"REGENT","codigo":"703"},{"descripcion":"COMIL","codigo":"704"}
+,{"descripcion":"MC","codigo":"705"},{"descripcion":"SUUL","codigo":"706"},{"descripcion":"BLACKHAWK","codigo":"709"},{"descripcion":"RANGE","codigo":"710"},{"descripcion":"DANGFENG","codigo":
+"711"},{"descripcion":"H-MOTO","codigo":"712"},{"descripcion":"MCI","codigo":"713"},{"descripcion":"LUS","codigo":"714"},{"descripcion":"OTTAWA","codigo":"715"},{"descripcion":"MUSTANG","codig
+o":"716"},{"descripcion":"FLASH","codigo":"717"},{"descripcion":"ZRW","codigo":"719"},{"descripcion":"HOBES","codigo":"720"},{"descripcion":"LANDINI","codigo":"722"},{"descripcion":"STERLING",
+"codigo":"723"},{"descripcion":"MASCARELLO","codigo":"724"},{"descripcion":"YUEJIN","codigo":"725"},{"descripcion":"TOYO","codigo":"726"},{"descripcion":"KINETIC","codigo":"727"},{"descripcion
+":"AG POWER","codigo":"728"},{"descripcion":"UNICO","codigo":"731"},{"descripcion":"UNITED MOTORS","codigo":"732"},{"descripcion":"ALFA","codigo":"733"},{"descripcion":"FLEETWOOD","codigo":"73
+4"},{"descripcion":"SATAN","codigo":"735"},{"descripcion":"HOLIDAY RAMBLERS","codigo":"736"},{"descripcion":"NEWMAR","codigo":"737"},{"descripcion":"TIFFIN","codigo":"738"},{"descripcion":"WIN
+NEBAGO","codigo":"739"},{"descripcion":"COACH HOUSE","codigo":"740"},{"descripcion":"REDCA","codigo":"741"},{"descripcion":"LINFAI","codigo":"742"},{"descripcion":"LUNCIN","codigo":"743"},{"de
+scripcion":"CONCORDE","codigo":"744"},{"descripcion":"RSM","codigo":"745"},{"descripcion":"OSAKA","codigo":"746"},{"descripcion":"POWER 150","codigo":"747"},{"descripcion":"SHZIKA","codigo":"7
+48"},{"descripcion":"KINROAD","codigo":"749"},{"descripcion":"SUNL","codigo":"750"},{"descripcion":"CALAVAN","codigo":"751"},{"descripcion":"TURIN","codigo":"754"},{"descripcion":"JINQ","codig
+o":"756"},{"descripcion":"SUKIDA","codigo":"758"},{"descripcion":"ESSANGYONG","codigo":"759"},{"descripcion":"SCOOTER","codigo":"760"},{"descripcion":"WALLEGAN","codigo":"763"},{"descripcion":
+"SHINERAY","codigo":"764"},{"descripcion":"ROKETA","codigo":"766"},{"descripcion":"CARPENTER","codigo":"767"},{"descripcion":"CAGIVA","codigo":"769"},{"descripcion":"HIGER","codigo":"770"},{"d
+escripcion":"AVIA","codigo":"771"},{"descripcion":"CENTURY","codigo":"772"},{"descripcion":"THUNDER BIKE","codigo":"773"},{"descripcion":"BONLEI","codigo":"774"},{"descripcion":"JAGUAR","codig
+o":"778"},{"descripcion":"EBRO","codigo":"780"},{"descripcion":"ROSSETTI","codigo":"782"},{"descripcion":"DADI","codigo":"783"},{"descripcion":"HLMEC","codigo":"785"},{"descripcion":"TUK TUK",
+"codigo":"787"},{"descripcion":"VARU","codigo":"788"},{"descripcion":"ARCA","codigo":"789"},{"descripcion":"GWM","codigo":"792"},{"descripcion":"ZHUJIANG","codigo":"794"},{"descripcion":"EASTM
+AN","codigo":"796"},{"descripcion":"STRONGER","codigo":"797"},{"descripcion":"GIAN","codigo":"799"},{"descripcion":"EUCLID","codigo":"800"},{"descripcion":"DONFENG","codigo":"801"},{"descripci
+on":"INDIAN","codigo":"802"},{"descripcion":"AHM","codigo":"805"},{"descripcion":"FORMULA","codigo":"807"},{"descripcion":"TCM","codigo":"808"},{"descripcion":"BIRELI","codigo":"811"},{"descri
+pcion":"WAYUNG","codigo":"812"},{"descripcion":"RANGER","codigo":"814"},{"descripcion":"SANYA","codigo":"815"},{"descripcion":"FJELDHUS","codigo":"816"},{"descripcion":"FORSS PARATOR","codigo"
+:"817"},{"descripcion":"KIMCO","codigo":"821"},{"descripcion":"MINI","codigo":"823"},{"descripcion":"YAKUMA","codigo":"824"},{"descripcion":"RAYBAR","codigo":"825"},{"descripcion":"UNISON","co
+digo":"827"},{"descripcion":"AMGN","codigo":"828"},{"descripcion":"MARK D","codigo":"830"},{"descripcion":"MASA","codigo":"832"},{"descripcion":"BERING","codigo":"833"},{"descripcion":"AJUMA",
+"codigo":"834"},{"descripcion":"KAVZ","codigo":"835"},{"descripcion":"BAJAJ","codigo":"837"},{"descripcion":"AVA","codigo":"840"},{"descripcion":"BASHAN","codigo":"842"},{"descripcion":"DFM","
+codigo":"843"},{"descripcion":"JIAN","codigo":"844"},{"descripcion":"MECO","codigo":"845"},{"descripcion":"HITONG","codigo":"846"},{"descripcion":"KINGSTAR","codigo":"847"},{"descripcion":"GIN
+AN QINGQI","codigo":"848"},{"descripcion":"KYK","codigo":"850"},{"descripcion":"KEEWAY","codigo":"851"},{"descripcion":"WIN","codigo":"852"},{"descripcion":"CAPACITY","codigo":"853"},{"descrip
+cion":"DAF","codigo":"854"},{"descripcion":"OPERBUS","codigo":"859"},{"descripcion":"CAN AM","codigo":"863"},{"descripcion":"MANITOU","codigo":"864"},{"descripcion":"FIORI","codigo":"865"},{"d
+escripcion":"TRUCK","codigo":"866"},{"descripcion":"MINICAR","codigo":"868"},{"descripcion":"HARRIS","codigo":"869"},{"descripcion":"BUSSCAR","codigo":"871"},{"descripcion":"KRUPP","codigo":"8
+72"},{"descripcion":"CASA","codigo":"874"},{"descripcion":"SHELBY","codigo":"877"},{"descripcion":"COZAD","codigo":"878"},{"descripcion":"CRIOGEN","codigo":"880"},{"descripcion":"RYAN","codigo
+":"882"},{"descripcion":"VANHOOL","codigo":"883"},{"descripcion":"AKT","codigo":"884"},{"descripcion":"JIAPENG","codigo":"886"},{"descripcion":"APRILIA","codigo":"888"},{"descripcion":"SERPENT
+O","codigo":"890"},{"descripcion":"ADVANCE","codigo":"891"},{"descripcion":"UD TRUCKS","codigo":"895"},{"descripcion":"LIEBHERR","codigo":"896"},{"descripcion":"FASTWAY","codigo":"897"},{"desc
+ripcion":"RS","codigo":"898"},{"descripcion":"KAMA","codigo":"900"},{"descripcion":"EDASA INFRA","codigo":"901"},{"descripcion":"SIN ASIGNAR","codigo":"0"},{"descripcion":"TOYOTA","codigo":"1"
+},{"descripcion":"NISSAN","codigo":"2"},{"descripcion":"FORD","codigo":"3"},{"descripcion":"PEUGEOT","codigo":"4"},{"descripcion":"RENAULT","codigo":"5"},{"descripcion":"CHEVROLET","codigo":"6
+"},{"descripcion":"MERCEDES BENZ","codigo":"7"},{"descripcion":"AUDI","codigo":"8"},{"descripcion":"SUZUKI","codigo":"9"},{"descripcion":"GEO","codigo":"10"},{"descripcion":"HYUNDAI","codigo":
+"11"},{"descripcion":"MITSUBISHI","codigo":"12"},{"descripcion":"DAEWOO","codigo":"13"},{"descripcion":"FERRARI","codigo":"14"},{"descripcion":"JEEP","codigo":"16"},{"descripcion":"DATSUN","co
+digo":"17"},{"descripcion":"VOLKSWAGEN","codigo":"18"},{"descripcion":"ISUZU","codigo":"19"},{"descripcion":"DAIHATSU","codigo":"20"},{"descripcion":"YAMAHA","codigo":"21"},{"descripcion":"BMW
+","codigo":"22"},{"descripcion":"ASIA","codigo":"23"},{"descripcion":"MACK","codigo":"24"},{"descripcion":"KRAZZ","codigo":"25"},{"descripcion":"WHITE","codigo":"26"},{"descripcion":"FRUEHAUF"
+,"codigo":"27"},{"descripcion":"FREIGHTLINER","codigo":"28"},{"descripcion":"KIA","codigo":"29"},{"descripcion":"IVECO","codigo":"30"},{"descripcion":"IFA","codigo":"31"},{"descripcion":"SUBAR
+U","codigo":"32"},{"descripcion":"BAJAJ-RE","codigo":"33"},{"descripcion":"G.M.C","codigo":"34"},{"descripcion":"MAZDA","codigo":"35"},{"descripcion":"QUINGO","codigo":"36"},{"descripcion":"TR
+AILMOBILE","codigo":"37"},{"descripcion":"HEIL","codigo":"38"},{"descripcion":"DODGE","codigo":"39"},{"descripcion":"VOLVO","codigo":"40"},{"descripcion":"SSANGYONG","codigo":"41"},{"descripci
+on":"LADA","codigo":"42"},{"descripcion":"MARMON","codigo":"43"},{"descripcion":"INTERNATIONAL","codigo":"44"},{"descripcion":"HINO","codigo":"45"},{"descripcion":"JINCHENG","codigo":"46"},{"d
+escripcion":"DAYANG","codigo":"47"},{"descripcion":"UAS","codigo":"48"},{"descripcion":"CERTIFIED","codigo":"49"},{"descripcion":"GALLOPER","codigo":"50"},{"descripcion":"BUDD","codigo":"51"},
+{"descripcion":"KENWORTH","codigo":"54"},{"descripcion":"GREAT DUNE","codigo":"55"},{"descripcion":"KAMAZ","codigo":"58"},{"descripcion":"KAWASAKI","codigo":"60"},{"descripcion":"KORANDO","cod
+igo":"61"},{"descripcion":"LAND ROVER","codigo":"62"},{"descripcion":"SANHUAN","codigo":"63"},{"descripcion":"PONTIAC","codigo":"70"},{"descripcion":"MZ","codigo":"71"},{"descripcion":"MAZ","c
+odigo":"72"},{"descripcion":"PLYMOUTH","codigo":"73"},{"descripcion":"SANYANG","codigo":"74"},{"descripcion":"SANTAMO","codigo":"75"},{"descripcion":"LUFKIN","codigo":"76"},{"descripcion":"SAM
+SUNG","codigo":"77"},{"descripcion":"WALDNER/WALKER","codigo":"78"},{"descripcion":"SYCSA","codigo":"79"},{"descripcion":"VESPA","codigo":"80"},{"descripcion":"FONTAINE","codigo":"81"},{"descr
+ipcion":"BRENNER","codigo":"82"},{"descripcion":"MERCURY","codigo":"83"},{"descripcion":"ALFA ROMEO","codigo":"84"},{"descripcion":"CITROEN","codigo":"85"},{"descripcion":"JIALING","codigo":"8
+6"},{"descripcion":"DACIA","codigo":"87"},{"descripcion":"BLUE BIRD","codigo":"88"},{"descripcion":"TATA","codigo":"90"},{"descripcion":"PLAGGIO","codigo":"92"},{"descripcion":"LEXUS","codigo"
+:"93"},{"descripcion":"LML","codigo":"94"},{"descripcion":"GILDER KIT","codigo":"95"},{"descripcion":"CADILLAC","codigo":"96"},{"descripcion":"HONDA","codigo":"98"},{"descripcion":"PIAGGIO","c
+odigo":"99"},{"descripcion":"DYNA","codigo":"100"},{"descripcion":"MAN","codigo":"101"},{"descripcion":"HARTFORD","codigo":"102"},{"descripcion":"VARICA","codigo":"104"},{"descripcion":"CHEVY"
+,"codigo":"105"},{"descripcion":"CLARK","codigo":"106"},{"descripcion":"GREAT DANE","codigo":"107"},{"descripcion":"HARLEY DAVIDSON","codigo":"108"},{"descripcion":"SANYONG","codigo":"109"},{"
+descripcion":"ACURA","codigo":"110"},{"descripcion":"MAHINDRA","codigo":"112"},{"descripcion":"KIA MOTORS","codigo":"114"},{"descripcion":"PETERBILT","codigo":"115"},{"descripcion":"CHRYSLER",
+"codigo":"118"},{"descripcion":"LINCOLN MERCURY","codigo":"119"},{"descripcion":"FIAT","codigo":"121"},{"descripcion":"TRAXX","codigo":"126"},{"descripcion":"HUMMER","codigo":"127"},{"descripc
+ion":"URAL","codigo":"128"},{"descripcion":"PEGASO","codigo":"129"},{"descripcion":"ZXMCO","codigo":"134"},{"descripcion":"CYCLER","codigo":"136"},{"descripcion":"QINGQI","codigo":"137"},{"des
+cripcion":"CHITUMA","codigo":"138"},{"descripcion":"WULING","codigo":"139"},{"descripcion":"XINGFU","codigo":"140"},{"descripcion":"ESCORTS","codigo":"141"},{"descripcion":"EAGLE","codigo":"14
+5"},{"descripcion":"VISTA","codigo":"146"},{"descripcion":"JAILING","codigo":"147"},{"descripcion":"THOMAS","codigo":"148"},{"descripcion":"CHANGAN","codigo":"149"},{"descripcion":"WILLYS","co
+digo":"151"},{"descripcion":"WULING","codigo":"154"},{"descripcion":"HERO MAJESTIC","codigo":"155"},{"descripcion":"JIEDA","codigo":"156"},{"descripcion":"DAELIM","codigo":"157"},{"descripcion
+":"OPEL","codigo":"158"},{"descripcion":"LIAZ","codigo":"159"},{"descripcion":"ASIA MOTORS","codigo":"160"},{"descripcion":"WESTERN STAR","codigo":"162"},{"descripcion":"IZH","codigo":"164"},{
+"descripcion":"TRAVIS","codigo":"324"},{"descripcion":"LUBBOCK","codigo":"325"},{"descripcion":"TOMCO","codigo":"326"},{"descripcion":"KROHNERT","codigo":"327"},{"descripcion":"OLDSMOBILLE","c
+odigo":"328"},{"descripcion":"CUSTOM","codigo":"329"},{"descripcion":"KALIN","codigo":"330"},{"descripcion":"YUMBO","codigo":"332"},{"descripcion":"IGSA","codigo":"334"},{"descripcion":"HAFEI
+MOTORS","codigo":"336"},{"descripcion":"KOMATSU","codigo":"338"},{"descripcion":"JOHN DEERE","codigo":"339"},{"descripcion":"FLOW BOY","codigo":"340"},{"descripcion":"WAS","codigo":"341"},{"de
+scripcion":"TILLVERKARE","codigo":"344"},{"descripcion":"TRAILKING","codigo":"345"},{"descripcion":"MERLO","codigo":"346"},{"descripcion":"BROCE","codigo":"348"},{"descripcion":"ETNYRE","codig
+o":"350"},{"descripcion":"INGERSOLL RAND","codigo":"351"},{"descripcion":"CASE","codigo":"353"},{"descripcion":"BELARUS","codigo":"358"},{"descripcion":"VIKING","codigo":"359"},{"descripcion":
+"NATIONAL CRANE","codigo":"360"},{"descripcion":"POLAR SUN","codigo":"361"},{"descripcion":"TIRRSA","codigo":"362"},{"descripcion":"DE LA GARZ","codigo":"363"},{"descripcion":"BOSTON WHA","cod
+igo":"367"},{"descripcion":"RAJDOOT","codigo":"369"},{"descripcion":"FUJI","codigo":"372"},{"descripcion":"PIONEER","codigo":"375"},{"descripcion":"FOTON","codigo":"378"},{"descripcion":"YG","
+codigo":"380"},{"descripcion":"ZAFARI","codigo":"381"},{"descripcion":"UNIMOG","codigo":"383"},{"descripcion":"SHUANGSHI","codigo":"384"},{"descripcion":"QJIANG","codigo":"385"},{"descripcion"
+:"PINOLERO","codigo":"386"},{"descripcion":"BUICK","codigo":"387"},{"descripcion":"UNITED MOTOR","codigo":"388"},{"descripcion":"SANSUNG","codigo":"389"},{"descripcion":"LINHAI","codigo":"390"
+},{"descripcion":"PRINCE V","codigo":"391"},{"descripcion":"GREAT WALL","codigo":"392"},{"descripcion":"SPLENDOR","codigo":"393"},{"descripcion":"KEEMOTORBIKES","codigo":"394"},{"descripcion":
+"ROCKET","codigo":"395"},{"descripcion":"PULSAR 135 LS","codigo":"396"},{"descripcion":"INFINITO","codigo":"397"},{"descripcion":"COLT-PLYMOUTH","codigo":"398"},{"descripcion":"KANGOO COMBI","
+codigo":"399"},{"descripcion":"POLARIS","codigo":"400"},{"descripcion":"HERO","codigo":"401"},{"descripcion":"EUNOS","codigo":"402"},{"descripcion":"MAX MOTOR","codigo":"404"},{"descripcion":"
+QUINQGI","codigo":"405"},{"descripcion":"TRIUMPH","codigo":"407"},{"descripcion":"KAISER","codigo":"408"},{"descripcion":"SEAT","codigo":"409"},{"descripcion":"FAW","codigo":"410"},{"descripci
+on":"MAGIRUS","codigo":"412"},{"descripcion":"CHEETAH","codigo":"413"},{"descripcion":"B.S.A","codigo":"414"},{"descripcion":"TYRSE","codigo":"415"},{"descripcion":"PERI","codigo":"416"},{"des
+cripcion":"MAX","codigo":"417"},{"descripcion":"AEOLUS","codigo":"419"},{"descripcion":"IFA-MZ","codigo":"420"},{"descripcion":"GAZ","codigo":"422"},{"descripcion":"RC MOTO","codigo":"424"},{"
+descripcion":"DINA","codigo":"425"},{"descripcion":"BEDFORD","codigo":"427"},{"descripcion":"MOTOMAX","codigo":"428"},{"descripcion":"SATURN","codigo":"429"},{"descripcion":"VPRINCE","codigo":
+"430"},{"descripcion":"LINCOLN","codigo":"431"},{"descripcion":"ZASTAVA","codigo":"432"},{"descripcion":"JUNDA","codigo":"434"},{"descripcion":"VOLGA","codigo":"435"},{"descripcion":"SUNSHINE"
+,"codigo":"436"},{"descripcion":"LIFAN","codigo":"438"},{"descripcion":"WHGM","codigo":"439"},{"descripcion":"MUDAN","codigo":"440"},{"descripcion":"CROWN TRAILLER","codigo":"441"},{"descripci
+on":"LEYLAND","codigo":"442"},{"descripcion":"HYOSUNG","codigo":"443"},{"descripcion":"MARCO POLO","codigo":"445"},{"descripcion":"K.R","codigo":"447"},{"descripcion":"LUNA","codigo":"448"},{"
+descripcion":"PRINCE ROCKET","codigo":"449"},{"descripcion":"SUPER SONIC","codigo":"450"},{"descripcion":"KAIZEN","codigo":"451"},{"descripcion":"ALL AMERICAN","codigo":"452"},{"descripcion":"
+GENESIS","codigo":"454"},{"descripcion":"JINGPIN","codigo":"457"},{"descripcion":"KRAZ","codigo":"459"},{"descripcion":"LML VESPA","codigo":"460"},{"descripcion":"STORM","codigo":"461"},{"desc
+ripcion":"KPA3","codigo":"462"},{"descripcion":"AMC","codigo":"463"},{"descripcion":"VALMET","codigo":"465"},{"descripcion":"RAPTOR","codigo":"466"},{"descripcion":"LUHAMA","codigo":"467"},{"d
+escripcion":"JINETERA","codigo":"468"},{"descripcion":"JZE","codigo":"469"},{"descripcion":"ZX AUTO","codigo":"470"},{"descripcion":"KASEA","codigo":"471"},{"descripcion":"JIANGDONG","codigo":
+"473"},{"descripcion":"JET LINE","codigo":"474"},{"descripcion":"VELARUZ","codigo":"475"},{"descripcion":"SKODA","codigo":"476"},{"descripcion":"CASA DINA","codigo":"478"},{"descripcion":"TOUG
+H","codigo":"479"},{"descripcion":"ZILL","codigo":"480"},{"descripcion":"MASSEY FERGUSON","codigo":"483"},{"descripcion":"JUMBO","codigo":"484"},{"descripcion":"DONG FENG TRUCK","codigo":"485"
+},{"descripcion":"AUPA","codigo":"486"},{"descripcion":"WAZ","codigo":"487"},{"descripcion":"QINGOI","codigo":"488"},{"descripcion":"LONCIN","codigo":"489"},{"descripcion":"SYM","codigo":"490"
+},{"descripcion":"JAWA","codigo":"491"},{"descripcion":"WRANGLER","codigo":"492"},{"descripcion":"TVS","codigo":"493"},{"descripcion":"SCANIA","codigo":"495"},{"descripcion":"GY","codigo":"496
+"},{"descripcion":"AUSA","codigo":"497"},{"descripcion":"WANG FENG","codigo":"498"},{"descripcion":"Py","codigo":"500"},{"descripcion":"AUTOCAR","codigo":"501"},{"descripcion":"SSNAGYAUG","cod
+igo":"502"},{"descripcion":"ADLY","codigo":"503"},{"descripcion":"MINSK","codigo":"504"},{"descripcion":"CPI","codigo":"505"},{"descripcion":"WILLD WILLY","codigo":"507"},{"descripcion":"JMC",
+"codigo":"509"},{"descripcion":"UAZ","codigo":"510"},{"descripcion":"AVANTI MOTOR","codigo":"512"},{"descripcion":"MASTER WORK","codigo":"513"},{"descripcion":"SUNDIRO","codigo":"514"},{"descr
+ipcion":"FORWARD","codigo":"515"},{"descripcion":"SAKURAI","codigo":"516"},{"descripcion":"GEELY","codigo":"517"},{"descripcion":"AVANTY","codigo":"518"},{"descripcion":"KITOMI","codigo":"519"
+},{"descripcion":"FALCON","codigo":"520"},{"descripcion":"FUTIAN","codigo":"521"},{"descripcion":"HONLEI","codigo":"522"},{"descripcion":"KYOTO","codigo":"524"},{"descripcion":"KATANA","codigo
+":"525"},{"descripcion":"SINSKI","codigo":"527"},{"descripcion":"FORZA","codigo":"529"},{"descripcion":"DONG FENG","codigo":"530"},{"descripcion":"DAYUN","codigo":"532"},{"descripcion":"TAINO"
+,"codigo":"535"},{"descripcion":"RC FALCON","codigo":"537"},{"descripcion":"YAMATI","codigo":"539"},{"descripcion":"DAYTONA SCOOTER","codigo":"540"},{"descripcion":"HIEDA","codigo":"543"},{"de
+scripcion":"DAIMLER BENZ","codigo":"544"},{"descripcion":"MONIKA","codigo":"545"},{"descripcion":"WW","codigo":"547"},{"descripcion":"SPIGALY","codigo":"548"},{"descripcion":"KAZUKI","codigo":
+"549"},{"descripcion":"SCORET","codigo":"550"},{"descripcion":"UD","codigo":"551"},{"descripcion":"YICHENG","codigo":"552"},{"descripcion":"ETON","codigo":"553"},{"descripcion":"CHEVIS","codig
+o":"554"},{"descripcion":"VENU","codigo":"559"},{"descripcion":"JET","codigo":"560"},{"descripcion":"COUGAR","codigo":"561"},{"descripcion":"ENDURO","codigo":"563"},{"descripcion":"CASE IH","c
+odigo":"564"},{"descripcion":"ZX","codigo":"565"},{"descripcion":"VERUCCI / WUXI","codigo":"567"},{"descripcion":"AMGE","codigo":"568"},{"descripcion":"ZONGSHEN","codigo":"569"},{"descripcion"
+:"KINLON","codigo":"570"},{"descripcion":"KONFOR","codigo":"572"},{"descripcion":"DIRT BIKE","codigo":"573"},{"descripcion":"WUYANG","codigo":"574"},{"descripcion":"KAYAK","codigo":"575"},{"de
+scripcion":"DERBI","codigo":"576"},{"descripcion":"WOLSELEY","codigo":"578"},{"descripcion":"FREEDOM","codigo":"579"},{"descripcion":"FORCE","codigo":"580"},{"descripcion":"SATURNO","codigo":"
+581"},{"descripcion":"XIALI","codigo":"582"},{"descripcion":"PONT","codigo":"583"},{"descripcion":"PGO","codigo":"584"},{"descripcion":"KOMOTO","codigo":"586"},{"descripcion":"JEANLING","codig
+o":"587"},{"descripcion":"LML PIAGGIO","codigo":"588"},{"descripcion":"CHANGFENG YANGZI","codigo":"593"},{"descripcion":"NEW HOLLAND","codigo":"594"},{"descripcion":"DUCATI","codigo":"596"},{"
+descripcion":"AVANTI","codigo":"597"},{"descripcion":"JINAN QINGQI","codigo":"599"},{"descripcion":"LFTEC","codigo":"600"},{"descripcion":"KASUKI","codigo":"601"},{"descripcion":"VENTO","codig
+o":"602"},{"descripcion":"GENERAL MOTORS","codigo":"603"},{"descripcion":"GUZZI","codigo":"604"},{"descripcion":"SKIGO","codigo":"605"},{"descripcion":"DONGFANG","codigo":"607"},{"descripcion"
+:"TRUENO","codigo":"608"},{"descripcion":"CATERPILLAR","codigo":"611"},{"descripcion":"SPARTAN PIRSCH","codigo":"612"},{"descripcion":"PEXMA","codigo":"614"},{"descripcion":"INFINITY","codigo"
+:"615"},{"descripcion":"JINBEI","codigo":"616"},{"descripcion":"KTM","codigo":"617"},{"descripcion":"ZOTYE MOTORS","codigo":"618"},{"descripcion":"JIANLING","codigo":"619"},{"descripcion":"KYM
+CO","codigo":"620"},{"descripcion":"U M","codigo":"621"},{"descripcion":"UM","codigo":"622"},{"descripcion":"SAAB","codigo":"625"},{"descripcion":"WOLKSWAGEN","codigo":"626"},{"descripcion":"A
+PACHE","codigo":"627"},{"descripcion":"GSMOON","codigo":"629"},{"descripcion":"WULING BOX","codigo":"630"},{"descripcion":"TIANMA","codigo":"632"},{"descripcion":"Z1NSUMG","codigo":"634"},{"de
+scripcion":"DFAC","codigo":"637"},{"descripcion":"AVANTI-TRIAL","codigo":"639"},{"descripcion":"PANTHER","codigo":"640"},{"descripcion":"SAFARI","codigo":"641"},{"descripcion":"PANTERA","codig
+o":"642"},{"descripcion":"IBECO","codigo":"643"},{"descripcion":"HAOJUE","codigo":"644"},{"descripcion":"BUGGY","codigo":"645"},{"descripcion":"LIANFEI","codigo":"648"},{"descripcion":"KAITONG
+","codigo":"649"},{"descripcion":"CHERY","codigo":"650"},{"descripcion":"PORSCHE","codigo":"651"},{"descripcion":"GILERA","codigo":"652"},{"descripcion":"PYM","codigo":"653"},{"descripcion":"O
+SHKOSH","codigo":"654"},{"descripcion":"TAYO","codigo":"655"},{"descripcion":"VALIANT","codigo":"656"},{"descripcion":"AGUILA","codigo":"657"},{"descripcion":"YINXIANG","codigo":"658"},{"descr
+ipcion":"SKY60","codigo":"660"},{"descripcion":"XINKAI","codigo":"661"},{"descripcion":"KUMOTO","codigo":"662"},{"descripcion":"PULSAR","codigo":"663"},{"descripcion":"JILING","codigo":"664"},
+{"descripcion":"AIGLE","codigo":"665"},{"descripcion":"AG SCOOTER","codigo":"666"},{"descripcion":"RALY USA","codigo":"667"},{"descripcion":"AG","codigo":"668"},{"descripcion":"DIMOSA","codigo
+":"669"},{"descripcion":"LEVY MARKETING","codigo":"670"},{"descripcion":"RADIN","codigo":"671"},{"descripcion":"JOYNER","codigo":"673"},{"descripcion":"KINGMOTOR","codigo":"674"},{"descripcion
+":"PLYMONT","codigo":"675"},{"descripcion":"GRAPTOR","codigo":"676"},{"descripcion":"JAC","codigo":"678"},{"descripcion":"SAFE RIDE","codigo":"680"},{"descripcion":"LUOJIA","codigo":"681"},{"d
+escripcion":"SYOTO","codigo":"683"},{"descripcion":"CHAMPION","codigo":"684"},{"descripcion":"HYDRA-MAC","codigo":"688"},{"descripcion":"SPEDD STAR","codigo":"690"},{"descripcion":"VIKING TRAI
+LERS","codigo":"691"},{"descripcion":"CHONGQING","codigo":"692"},{"descripcion":"CHANA","codigo":"694"},{"descripcion":"HAOJIN","codigo":"695"},{"descripcion":"FOYO","codigo":"696"},{"descripc
+ion":"HAOBON","codigo":"697"},{"descripcion":"NACIONAL","codigo":"698"},{"descripcion":"STUDEBAKER","codigo":"699"},{"descripcion":"ALLOY","codigo":"902"},{"descripcion":"INFINITE","codigo":"9
+03"},{"descripcion":"DFSK","codigo":"904"},{"descripcion":"ALPHA","codigo":"905"},{"descripcion":"M","codigo":"906"},{"descripcion":"CASE CE","codigo":"908"},{"descripcion":"SITROEN","codigo":
+"910"},{"descripcion":"AKI","codigo":"911"},{"descripcion":"SPORT","codigo":"912"},{"descripcion":"JHON DEERE","codigo":"915"},{"descripcion":"INTERNACIONAL","codigo":"482"},{"descripcion":"OD
+ES","codigo":"928"},{"descripcion":"SANTANA","codigo":"930"},{"descripcion":"GECI","codigo":"948"},{"descripcion":"DORSEY","codigo":"955"},{"descripcion":"TRIUNFO","codigo":"967"},{"descripcio
+n":"SKYGO","codigo":"968"},{"descripcion":"BARE","codigo":"990"},{"descripcion":"HN","codigo":"995"},{"descripcion":"GONOW","codigo":"1000"},{"descripcion":"KZ150GY","codigo":"1004"},{"descrip
+cion":"RAZUKI","codigo":"506"},{"descripcion":"GROVE","codigo":"1005"},{"descripcion":"SCION","codigo":"1012"},{"descripcion":"XTREME","codigo":"1018"},{"descripcion":"BYD","codigo":"917"},{"d
+escripcion":"HAIMA","codigo":"919"},{"descripcion":"N/R","codigo":"931"},{"descripcion":"BENSON","codigo":"933"},{"descripcion":"STAR","codigo":"934"},{"descripcion":"ZNA","codigo":"935"},{"de
+scripcion":"BELARUZ","codigo":"940"},{"descripcion":"WHITE GMC","codigo":"949"},{"descripcion":"VITA","codigo":"950"},{"descripcion":"MG","codigo":"953"},{"descripcion":"ZNA RICH","codigo":"95
+8"},{"descripcion":"JINYEE","codigo":"966"},{"descripcion":"BENELLI","codigo":"970"},{"descripcion":"BMY","codigo":"975"},{"descripcion":"BOXER","codigo":"983"},{"descripcion":"TREMAC","codigo
+":"1001"},{"descripcion":"STOUGHTON","codigo":"15"},{"descripcion":"TATSA","codigo":"892"},{"descripcion":"S W M","codigo":"909"},{"descripcion":"FOX GL","codigo":"1022"},{"descripcion":"VENTA
+GE","codigo":"1026"},{"descripcion":"VENTAGE","codigo":"1027"},{"descripcion":"HOSAKA","codigo":"446"},{"descripcion":"XINYIJIA","codigo":"943"},{"descripcion":"CHMBR","codigo":"944"},{"descri
+pcion":"SINOTRUK","codigo":"965"},{"descripcion":"MAZDA,CX-5","codigo":"980"},{"descripcion":"UTILITY","codigo":"982"},{"descripcion":"BARRET","codigo":"988"},{"descripcion":"BAIC","codigo":"9
+91"},{"descripcion":"YINGANG","codigo":"992"},{"descripcion":"MOTOGO","codigo":"999"},{"descripcion":"TREMAC","codigo":"1002"},{"descripcion":"MICHELIN","codigo":"707"},{"descripcion":"YAMASAK
+I","codigo":"1017"},{"descripcion":"LETEC","codigo":"1023"},{"descripcion":"VANTAGE","codigo":"1025"},{"descripcion":"ORION","codigo":"1028"},{"descripcion":"MITSUBISHI","codigo":"924"},{"desc
+ripcion":"SAMURAI","codigo":"927"},{"descripcion":"FORD RANGER","codigo":"929"},{"descripcion":"GROVE","codigo":"939"},{"descripcion":"UNISOL","codigo":"947"},{"descripcion":"PYH","codigo":"95
+4"},{"descripcion":"ZIL","codigo":"962"},{"descripcion":"ZONG","codigo":"1013"},{"descripcion":"SETRA","codigo":"1015"},{"descripcion":"FORLAND","codigo":"1016"},{"descripcion":"TRANSCRAFT","c
+odigo":"1021"},{"descripcion":"KUBOTA","codigo":"907"},{"descripcion":"TAURO","codigo":"631"},{"descripcion":"BLK","codigo":"918"},{"descripcion":"CHANGHE","codigo":"920"},{"descripcion":"NICR
+OAD","codigo":"942"},{"descripcion":"PUTZMEISTER AMERICA, INC","codigo":"956"},{"descripcion":"DOLLYS","codigo":"961"},{"descripcion":"AK180 LX","codigo":"969"},{"descripcion":"HOWO","codigo":
+"971"},{"descripcion":"SMART","codigo":"973"},{"descripcion":"YANGZI","codigo":"997"},{"descripcion":"FARGO","codigo":"1006"},{"descripcion":"STRICK","codigo":"1007"},{"descripcion":"HILB","co
+digo":"899"},{"descripcion":"VANTAGE","codigo":"1024"},{"descripcion":"BANYUAR","codigo":"1029"},{"descripcion":"AKT","codigo":"1031"},{"descripcion":"STEELMER","codigo":"1034"},{"descripcion"
+:"BOXER","codigo":"1035"},{"descripcion":"PIAGGO","codigo":"916"},{"descripcion":"FMC FEEDLINER","codigo":"938"},{"descripcion":"MITSUBISHI FUSO","codigo":"957"},{"descripcion":"ODAS","codigo"
+:"959"},{"descripcion":"TRUE AMERICAN CLASSICS","codigo":"963"},{"descripcion":"SACHS BIKES","codigo":"972"},{"descripcion":"AVANTI 200","codigo":"979"},{"descripcion":"FONT","codigo":"981"},{
+"descripcion":"ADELANTE","codigo":"987"},{"descripcion":"RENLI","codigo":"996"},{"descripcion":"CHEROKEE","codigo":"921"},{"descripcion":"UNI-SOL","codigo":"922"},{"descripcion":"BAW","codigo"
+:"926"},{"descripcion":"ZOTYE","codigo":"932"},{"descripcion":"STARK","codigo":"937"},{"descripcion":"DRILL SYSTEMS","codigo":"946"},{"descripcion":"RAM","codigo":"952"},{"descripcion":"KING L
+ONG BUS","codigo":"960"},{"descripcion":"SEMEATO","codigo":"964"},{"descripcion":"MRC","codigo":"977"},{"descripcion":"TRANSPORT","codigo":"984"},{"descripcion":"TR200","codigo":"986"},{"descr
+ipcion":"WILSON","codigo":"989"},{"descripcion":"FREIGTHLINER","codigo":"1003"},{"descripcion":"TAIDOK","codigo":"1008"},{"descripcion":"BAHOCK","codigo":"881"},{"descripcion":"CHMBR","codigo"
+:"1030"},{"descripcion":"HOSAKA","codigo":"1032"},{"descripcion":"FORD USA","codigo":"923"},{"descripcion":"HENDRICKEON","codigo":"925"},{"descripcion":"SANGYONG","codigo":"936"},{"descripcion
+":"YIPTER","codigo":"941"},{"descripcion":"MAVERICK","codigo":"945"},{"descripcion":"SANLG","codigo":"951"},{"descripcion":"MRT","codigo":"974"},{"descripcion":"DOMINAR","codigo":"976"},{"desc
+ripcion":"TIRUN","codigo":"978"},{"descripcion":"HUSQVARNA","codigo":"985"},{"descripcion":"KROSS","codigo":"993"},{"descripcion":"CORP PENSKE","codigo":"994"},{"descripcion":"BANYUAR","codigo
+":"998"},{"descripcion":"OMEGA","codigo":"1014"},{"descripcion":"SAME","codigo":"635"},{"mensaje":"OK"}]
