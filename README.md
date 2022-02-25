@@ -8,4 +8,4 @@ Control de PL/SQL
 *   SMTW-627, Implementacion de proceso Masivo para la apertura de reaclamos en tronweb
 *   SMTW-908, ASIGNACIÓN DE AUTOMÁTICA DE CARTERA  
 *   SMTW-627, Implementación de proceso masivo para la apertura de reclamos en TRONWEB   
-*   SMTW-868, Listado de polizas emitidas por WEB  
+*   SMTW-868, Listado de polizas emitidas por WEB, tarea asociada es MNIEML034  
